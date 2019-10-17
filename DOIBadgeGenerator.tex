@@ -1,0 +1,45 @@
+\documentclass[border=1mm]{standalone}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[scaled]{helvet}
+\renewcommand*{\familydefault}{\sfdefault}
+\RequirePackage[usenames,tables]{xcolor}
+\definecolor{ABlue}{HTML}{127bca}
+\definecolor{LHScolor}{HTML}{555555}
+\usepackage[hidelinks]{hyperref}
+
+% --------------------
+% Text blocks
+% --------------------
+\usepackage[most]{tcolorbox}
+
+% Creation of a dropped shadow
+\newcommand{\droptextshadow}[2]{%
+    \tikz[baseline,outer sep=0pt, inner sep=0pt]{
+    % Dropped Shadow
+    \node[#1!40!black] at (0,-0.1ex) {#2};
+    % Text
+    \node[white] at (0,0) {#2};
+}%
+}
+\newcommand{\DOIbox}[1]{
+\tcbsidebyside[
+        bicolor,
+        sidebyside,
+        %fontupper=\color{white},fontlower=\color{white},%  <-- broken by sidebyside adapt (explicitely set in input)
+        sidebyside adapt=both,
+        sidebyside gap=5pt,
+        top=0pt,left=0pt,right=0pt,bottom=0pt,
+        boxrule=0pt,rounded corners,
+        interior style={top color=LHScolor,bottom color=LHScolor!60!black},
+        segmentation style={top color=ABlue,bottom color=ABlue!60!black},
+]{%
+\droptextshadow{LHScolor}{DOI}% <-- Drop shadow + text for DOI 
+}{%
+\droptextshadow{ABlue}{\href{http://dx.doi.org/#1}{#1}}% <-- Drop shadow + text for reference number + hyperref
+}%
+}
+
+\begin{document}
+\DOIbox{10.5281/zenodo.3497450}
+\end{document}

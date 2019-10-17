@@ -1,5 +1,5 @@
 ---
-title: "A demonstration of combined scientific data processing and publication using Literate Programming in R "
+title: "A demonstration of combined scientific data processing and publication using Literate Programming in R"
 author: "Andy Clifton"
 date: '`r Sys.Date()`'
 output: 
@@ -11,7 +11,7 @@ output:
 #      in_header: header.tex
     keep_tex: true
     citation_package: natbib
-fontsize: 11pt
+fontsize: 10pt
 geometry: margin=1in
 graphics: yes
 bibliography: main.bib
@@ -27,7 +27,7 @@ This script is designed to be used with RStudio. When you click the **Knit** but
 
 # Introduction
 
-something something reproducible research, mumble, grumble, get off my lawn, grumble
+Something something reproducible research, mumble, grumble, get off my lawn, grumble.
 
 ## Linking analysis and publication workflows
 Anecdotally, the separation of the publication from the analysis process has been a  barrier to reproducible research, as it is impossible to ensure the link between source data and final publication.
@@ -39,7 +39,7 @@ Furthermore, this project has been structured so that the data required for this
 ## How Literate Programming was used to write this document
 In this example, an output PDF document and results are generated from a file called _main.rmd_. _main.rmd_ is an [R markdown file](https://rmarkdown.rstudio.com/authoring_basics.html). R markdown is a flavor of markdown that can be processed by the R programming language [@R-base] to run code (i.e, do analysis) and create documentation from the same document. This is done using a package called _knitr_. Instructions for how to run _knitr_ are included in the _howto.md_ file in this repository. A far more detailed guide to writing using R markdown can be found in @R-Markdown-Guide.
 
-The markdown document contains a mixture of documentation and so-called ``code chunks''. The code chunks can be configured so that their outputs are echoed to the document (or not), which in turn allows the output PDF to show only those parts of the data processing that are relevant.
+The markdown document contains a mixture of documentation -- written in markdown or LaTeX - and so-called ``code chunks'', which here are written in R. The code chunks can be configured so that their outputs are echoed to the document (or not), which in turn allows the output PDF to show only those parts of the data processing that are relevant. You can thus completely hide the data operations in your output PDF and just concentrate on displaying the results.
 
 I suggest reading this PDF together with the R markdown file (_main.rmd_) and possibly the _knitr_ instructions ^[See https://yihui.name/knitr/]. This will greatly help in understanding what is done in the processing and what makes it to the publication.
 
@@ -287,3 +287,15 @@ Scientific Journals often have their own formatting requirements. These requirem
 
 # Conclusions
 It is possible to write a single document that captures all of the process of preparing and analysing data and creating a publication to describe that data.
+
+# Referencing this document {-}
+
+This document has been assigned the Digital Object Identifier [10.5281/zenodo.3497450](http://dx.doi.org/10.5281/zenodo.3497450).
+
+[![DOI](DOIBadgeGenerator.pdf)](https://doi.org/10.5281/zenodo.3497450)
+
+# Acknowledgements {-}
+
+Many thanks to Nikola Vasiljevic at DTU for prompting me to get this done. 
+
+# Bibliography

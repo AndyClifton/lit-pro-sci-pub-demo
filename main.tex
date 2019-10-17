@@ -1,4 +1,4 @@
-\documentclass[11pt,]{article}
+\documentclass[10pt,]{article}
 \usepackage{lmodern}
 \usepackage{amssymb,amsmath}
 \usepackage{ifxetex,ifluatex}
@@ -143,7 +143,7 @@
 \hypertarget{introduction}{%
 \section{Introduction}\label{introduction}}
 
-something something reproducible research, mumble, grumble, get off my lawn, grumble
+Something something reproducible research, mumble, grumble, get off my lawn, grumble.
 
 \hypertarget{linking-analysis-and-publication-workflows}{%
 \subsection{Linking analysis and publication workflows}\label{linking-analysis-and-publication-workflows}}
@@ -159,7 +159,7 @@ Furthermore, this project has been structured so that the data required for this
 
 In this example, an output PDF document and results are generated from a file called \emph{main.rmd}. \emph{main.rmd} is an \href{https://rmarkdown.rstudio.com/authoring_basics.html}{R markdown file}. R markdown is a flavor of markdown that can be processed by the R programming language \citep{R-base} to run code (i.e, do analysis) and create documentation from the same document. This is done using a package called \emph{knitr}. Instructions for how to run \emph{knitr} are included in the \emph{howto.md} file in this repository. A far more detailed guide to writing using R markdown can be found in \citet{R-Markdown-Guide}.
 
-The markdown document contains a mixture of documentation and so-called ``code chunks''. The code chunks can be configured so that their outputs are echoed to the document (or not), which in turn allows the output PDF to show only those parts of the data processing that are relevant.
+The markdown document contains a mixture of documentation -- written in markdown or LaTeX - and so-called ``code chunks'', which here are written in R. The code chunks can be configured so that their outputs are echoed to the document (or not), which in turn allows the output PDF to show only those parts of the data processing that are relevant. You can thus completely hide the data operations in your output PDF and just concentrate on displaying the results.
 
 I suggest reading this PDF together with the R markdown file (\emph{main.rmd}) and possibly the \emph{knitr} instructions \footnote{See \url{https://yihui.name/knitr/}}. This will greatly help in understanding what is done in the processing and what makes it to the publication.
 
@@ -427,6 +427,21 @@ Scientific Journals often have their own formatting requirements. These requirem
 
 It is possible to write a single document that captures all of the process of preparing and analysing data and creating a publication to describe that data.
 
+\hypertarget{referencing-this-document}{%
+\section*{Referencing this document}\label{referencing-this-document}}
+\addcontentsline{toc}{section}{Referencing this document}
+
+This document has been assigned the Digital Object Identifier \href{http://dx.doi.org/10.5281/zenodo.3497450}{10.5281/zenodo.3497450}.
+
+\href{https://doi.org/10.5281/zenodo.3497450}{\includegraphics{DOIBadgeGenerator.pdf}}
+
+\hypertarget{acknowledgements}{%
+\section*{Acknowledgements}\label{acknowledgements}}
+\addcontentsline{toc}{section}{Acknowledgements}
+
+Many thanks to Nikola Vasiljevic at DTU for prompting me to get this done.
+
+\renewcommand\refname{Bibliography}
 \bibliography{main.bib}
 
 
