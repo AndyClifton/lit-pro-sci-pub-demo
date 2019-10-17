@@ -1,68 +1,72 @@
 ---
-title: "PCWG_share_01_main"
+title: "formatting"
 author: "Andy Clifton"
 date: '`r Sys.Date()`'
 output: pdf_document
 ---
-<!-- ## Reading the source code?
+<!-- ## If you are reading the source code
 This is R Markdown. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com> or <http://kbroman.org/knitr_knutshell/pages/Rmarkdown.html>.
 
 This script is designed to be used with RStudio. When you click the **Knit** button in RStudio a document will be generated that includes the output of any embedded R code chunks within the document. -->
 
 # Introduction
-This document demonstrates the concept of Literate Programming. An output PDF document and results are generated using the programing language `R` from the _main.rmd_ file and can be run by participants themselves.
 
-## How to use main.rmd
-install R (<http://www.r-project.org>) and Rstudio (<http://www.rstudio.com>), and then create a directory with all of the code and files (see below). When you click the **Knit** button in RStudio a document will be generated that includes text and results from the code embedded in _main.rmd_.
+something something reproducible research mumble, grumble
+
+## Linking analysis and publication workflows
+Anecdotally, the separation of the publication from the analysis process has been a  barrier to reproducible research, as it is impossible to ensure the link between source data and final publication.
+
+This document demonstrates the concept of Literate Programming. Literate programming means that the program documentation is complete and contained within the program itself. It is important to note that the documentation is effectively a publication, and thus it is possible to combine data analysis with the creation of a publication in the same file. The use of literate programming therefore mitigates this barrier to reproducible research.
+
+Furthermore, this project has been structured so that the data required for this publication are in a subdirectory of the project. This means that all of the files required to reproduce the analysis results can be included in a repository.
+
+## How Literate Programming was used to write this document
+In this example, an output PDF document and results are generated from a file called _main.rmd_. _main.rmd_ is an [R markdown file](https://rmarkdown.rstudio.com/authoring_basics.html). R markdown is a flavor of markdown that can be processed by the R programming language to run code (i.e, do analysis) and create documentation from the same document. This is done using a package called _knitr_. Instructions for how to run _knitr_ are included in the _howto.md_ file in this repository.
+
+The markdown document contains a mixture of documentation and code ``chunks``. The code chunks can be configured so that their outputs are echoed to the document (or not), which in turn allows the output PDF to show only those parts of the data processing that are relevant.
+
+I suggest reading the PDF together with the .rmd file and possibly the _knitr_ instructions ^[See https://yihui.name/knitr/]. This will greatly help in understanding what is done in the processing and what makes it to the publication.
+
+<!-- ## Execute some code without displaying results. -->
 
 ```{r clean up, echo = FALSE}
 rm(list = ls())
 ```
-## User Inputs
-The _project.root_ variable defines the location of the files required for this analysis. The _made.by_ variable forms part of a label that will be added to the plots. 
 
-The following user inputs were used in the preparation of this document:
+## An example of Literate Programming in action
+Like most scripts, _main.rmd_ includes a few variables that the user must set to run the analysis.
 
-```{r user-defined options}
+ * The _project.root_ variable defines the location of the files required for this analysis.
+ * The _made.by_ variable forms part of a label that will be added to the plots.
+
+An advantage of _knitr_ is that we can simply execute the code and show the code and results inline:
+
+```{r user-defined options, message=TRUE, results = 'hold'}
 # Where can files be found?
-project.root <- file.path('/Users/aclifton/Documents/confidential/projects/PCWG Share 01')
+project.root <- file.path('/Users/andyc/Documents/public/GitHub/LiterateDemo')
+project.root
 
 # Who ran this script
 made.by = "A. Clifton"
-```
-We now generate a directory (_output.dir_) to capture the outputs from this analysis.
-
-```{r check old data actually exists, results="asis", echo = FALSE}
-# define the path to the directory that we will use to store all of the data
-output.dir = file.path(project.root, 
-                       "analysis",
-                       "all")
-# create this directory if it doesn't already exist
-dir.create(output.dir, 
-           showWarnings = FALSE,
-           recursive = TRUE)
-
+made.by
 ```
 
-## Packages
-### Standard Packages
-This script requires the _ggplot2_, _grid_, _knitr_, _RColorBrewer_, _rgdal_, _stringr_, and _XLConnect_ packages to run. These are called from the script but you may need to install them directly. For details of how to install packages, see the RStudio help. 
+We can also show the value of those variables in the documentation using backticks around the variable names in the markdown.
 
-```{r load packages, message=FALSE, echo = FALSE}
-require(ggplot2)
+ * _project.root_ is `r project.root`
+ * _made.by_  is `r made.by`.
 
-if(packageVersion("ggplot2") < "2.2.0") {
-    stop("Need package:ggplot2 2.2 or higher for labs function")
-}
+## The directory structure
+_working.dir_ is the root directory of the project. There are several important subdirectories:
 
-require(grid)
-require(XLConnect)
-require(knitr)
-require(reshape2)
-require(stringr)
-```
+ * /__code__ contains functions required for the analysis
+ * /__data__ contains the data files to be analyzed.
 
-## Directory structure
+We'll also create a new directory:
+ 
+ * /__analysis__ contains the results of the analysis.
+
+<!-- ## We now generate a directory (_output.dir_) to capture the outputs from this analysis.-->
 
 ```{r define file locations, message=FALSE, echo = FALSE}
 # define the working directory
@@ -73,10 +77,48 @@ setwd(working.dir)
 data.dir = file.path(project.root,
                      "data")
 
-# define where functions live
+#identify code directory
 code.dir = file.path(project.root,
                      "code")
 
+# define the path to the directory that we will use to store all of the data
+output.dir = file.path(project.root,
+                       "analysis",
+                       "all")
+
+# create this directory if it doesn't already exist
+dir.create(output.dir,
+           showWarnings = FALSE,
+           recursive = TRUE)
+
+```
+
+# A note on Packages
+Packages are required to supplement base R functions. For example, this script requires the _ggplot2_, _grid_, _knitr_, _RColorBrewer_, _rgdal_, and _stringr_ packages to run. These are called from the script using the _require()_ function. This assumes that the packaages are available on your system.^[For details of how to install packages, see the RStudio help.]
+
+N.B. It is likely that the use of packages makes data processing non-repeatable, because the function and output of the packages may change over time. 
+
+```{r load packages, message=FALSE, echo = FALSE}
+require(ggplot2)
+
+if(packageVersion("ggplot2") < "2.2.0") {
+    stop("Need package:ggplot2 2.2 or higher for labs function")
+}
+
+require(grid)
+require(knitr)
+require(reshape2)
+require(stringr)
+```
+
+# Implementing a coupled analysis and publication workflow
+An analysis and publication workflow usually follows a similar path:
+
+
+## Loading our own routines
+Every data processing workflow requires its own scripts or functions to run. In this example, they are included in the _codes_ directory and sourced during the preparation of this document.
+
+```{r source codes, message=FALSE, results='asis', echo = TRUE}
 # source these functions
 code.files = dir(code.dir, pattern = "\\.R$")
 for (file in code.files){
@@ -84,58 +126,82 @@ for (file in code.files){
 }
 
 ```
-The folowing files should be placed in the _project.root_ directory:
 
-* main.Rmd
-* /__analysis__ directory containg results of the analysis
-* /__code__ directory containing functions required for the analysis
-* /__data__ directory containing the data files to be analyzed. 
 
-```{r configure graphics, message=FALSE, echo = FALSE}
-# configure graphics appearance
-theme_set(theme_Literate(base_size = 8, 
-               base_family = "sans"))
-```
-
-# Results from each data set
-We now analyse the data from the simple data set. The plots are saved to the _analysis_ directory. If _data.public_ is FALSE, plots will be created for every data set. If _data.public_ is TRUE, only the final, aggregated data plots will be created.
+## Load the data
+We now analyse the data from the simple data set. In this case, code has been written to load all of the files in the _data.dir_   directory (`r data.dir`). I'm also going to map the three columns in the data files to the variables $x$, $y$, and $z$.^[See https://www.calvin.edu/~rpruim/courses/s341/S17/from-class/MathinRmd.html for more information about including maths in R markdown]
 
 ```{r load individual data files, results='asis', echo = FALSE}
-# set a counter to check for numbers of files that are data.version.earliest or later
-count.version = 0
-if (data.analyze.raw == TRUE){
   # identify the data sets that we have available
-  data.files = dir(data.dir, 
+  data.files = dir(data.dir,
                    recursive = TRUE,
                    pattern = "\\.csv$")
-  
+
+  # load each file
   for (data.file in data.files){
     # Read this data set;
-  
+    df.in <- read.csv(file.path(data.dir,
+                       data.file),
+                      col.names = c("x","y","z"),
+             header=TRUE)
+    # capture information about this data
+    df.in$source = data.file
+    # check for the existance of an aggregate data set. If it's not there, create a new one
+    if (!exists("df.all")){
+      # theres no data
+      df.all <- df.in
+    } else {
+      # append new data
+      df.all <- rbind(df.all,
+                      df.in)
     }
-  }
-}
+    }
 ```
 
+## Plot input data
+The next step is to plot the input data. In this case we plot all of the input data together in one plot, but there are many different possibilities. Figures can also be given a consistent look and feel through ggplot's themes.
+
+<!-- Configure graphics -->
+```{r configure graphics, message=FALSE, echo = FALSE}
+# configure graphics appearance
+#theme_set(theme_Literate(base_size = 8,
+#                         base_family = "sans"))
+```
+
+```{r plot input data, echo= FALSE, fig.show='hold', fig.width = 6, fig.height = 3}
+p <- plotSomething(df=df.all,
+                   made.by)
+```
+
+For convenience, we'll also save a copy of the figure as a .png file to the _analysis_ directory.
+
+```{r save plot of input data, message = FALSE, echo=FALSE}
+ggsave(filename = file.path(output.dir,
+                                  "DataAll.png"),
+             plot = p,
+             width = 6, 
+             height = 4, 
+             units = "in", 
+             dpi = 300)
+```
+
+## Operate on the data
+
+## Plot the results
+
+## Connect processing with publication
+So far we have demonstrate that we can import and manipulate data and plot results. Another important part of a publication is the ability to generate statistics from data and include that in our text.
+
+To demonstrate that, I can calculate that the maximum value of $y$ in the input data sets was `r max(df.all$y)`. This can be confirmed by checking the input data files and 
+
+## Save the processed data 
+We now write our data to file.
 
 ``` {r save data, echo=FALSE}
-# define the path to the directory that we will use to store all of the data
-output.dir = file.path(project.root, 
-                       "analysis",
-                       "all")
-
 # save the data
-if (data.analyze.raw == TRUE){
-  save(list = c("project.root",
-                "made.by",
-                "data.public",
-                "data.version.earliest",
-                "working.dir",
-                "output.dir",
-                "all.data"), 
-       file = file.path(output.dir,"AggregatedData.RData"),
+save(list = c("project.root",
+              "made.by",
+              "df.all"),
+       file = file.path(output.dir,"Data.RData"),
        envir = .GlobalEnv)
-} else {
-  load(file = file.path(output.dir,"AggregatedData.RData"))
-}
 ```
