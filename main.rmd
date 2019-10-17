@@ -164,8 +164,6 @@ dir.create(output.dir,
 
 We'll also create a new directory for the results of the analysis. In this case it can be found at __`r output.dir`__.
 
-**Note:** Packages are required to supplement base functions in R and many other languages. For example, this script requires the _reticulate_, _bookdown_, _ggplot2_, _grid_, _knitr_, _RColorBrewer_, _rgdal_, and _stringr_ packages to run. These are called from the script using the _require()_ function. This assumes that the packaages are available on your system.^[For details of how to install packages, see the RStudio help.] The use of packages represents a challenge to reproducable and repeatable research as it is possible that the function and output of the packages may change over time.
-
 ```{r load packages, message=FALSE, echo = FALSE}
 require(bookdown)
 require(ggplot2)
@@ -305,11 +303,10 @@ save.image(file=file.path(output.dir,"workspace.RData"))
 
 ## Saving packages
 <!--- ? Is it possible to save packages locally the first time they are called and then pick them up there afterwards, instead of from a repo? --->
+Packages are required to supplement base functions in R and many other languages. For example, this script requires the _reticulate_, _bookdown_, _ggplot2_, _grid_, _knitr_, _RColorBrewer_, _rgdal_, and _stringr_ packages to run. These are called from the script using the _require()_ function. This assumes that the packages are available on your system.^[For details of how to install packages, see the RStudio help.] The use of packages represents a challenge to reproducable and repeatable research as it is possible that the function and output of the packages may change over time.
 
 ## Applying Journal formating
 Scientific Journals often have their own formatting requirements. These requirements can still be met using markdown. The mechanics of such a process are beyond the scope of this paper and should probably be done as the last step in the publishing process. The reader is suggested to look at the _rticles_ package and to use the detailed instructions in section 13 of the R Markdown Guide [@R-Markdown-Guide].
-
-## Packaging for storage
 
 ## Thoughts on audit trails and confidentiality
 Audit trails and confidentiality have implications for data (which might be commercially sensitive) and algorithms (which represent intellectual property).
@@ -322,13 +319,16 @@ Algorithms could be called directly from third party services or accessed via AP
 
 All of these considerations can be dealt with in the data processing routines that are included in the source code of this document. There are doubtless many other issues and anyone concerned about this is encouraged to consult an expert.
 
+## Packaging for storage
+A simple solution to repeatability and reproducability may be to have a generic ``data processing'' image of a computer system, e.g. as a Docker image, that is started for each new project and used _only_ for that project. This clean system is then used for one data processing task which is managed through a file such as the one you are reading. When the project is complete, the image is simply stored for as long as required. This would also avoid problems associated with changes introduced by package and system updates. A drawback to this approach would be the need to migrate the data every 5 years or so to a new system, which would be required to avoid data being stranded on old software.
+
 # Conclusions
 Literate programming allows the creation of a single document that captures all of the process of preparing and analysing data, and creating a publication to describe that data. This is a fundamental requirement of reproducible research.
 
 # Referencing this document {-}
 This document has been assigned the Digital Object Identifier [10.5281/zenodo.3497450](http://dx.doi.org/10.5281/zenodo.3497450). Citations in a range of formats can be obtained through Zenodo.
 
-[![DOI](DOIBadgeGenerator.pdf)](https://doi.org/10.5281/zenodo.3497450)
+[![DOI](DOIBadge3497450.pdf)](https://doi.org/10.5281/zenodo.3497450)
 
 The source code for this document is available through [github.com/AndyClifton/LiterateDemo](https://github.com/AndyClifton/LiterateDemo).
 
