@@ -24,6 +24,4 @@ plotSomething <- function(df,
     labs(title = plot.title) +
     labs(subtitle = plot.subtitle) +
     labs(caption=plot.caption) 
-  
-  print(p)
 }

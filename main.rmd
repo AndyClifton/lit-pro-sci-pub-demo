@@ -1,8 +1,24 @@
 ---
-title: "formatting"
+title: "A demonstration of combined scientific data processing and publication using Literate Programming in R "
 author: "Andy Clifton"
 date: '`r Sys.Date()`'
-output: pdf_document
+output: 
+  bookdown::pdf_document2:
+    latex_engine: pdflatex
+    number_sections: true
+    fig_caption: true
+#    includes:
+#      in_header: header.tex
+    keep_tex: true
+    citation_package: natbib
+fontsize: 11pt
+geometry: margin=1in
+graphics: yes
+bibliography: main.bib
+linkcolor: blue
+urlcolor: red
+citecolor: cyan
+link_citations: true
 ---
 <!-- ## If you are reading the source code
 This is R Markdown. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com> or <http://kbroman.org/knitr_knutshell/pages/Rmarkdown.html>.
@@ -11,7 +27,7 @@ This script is designed to be used with RStudio. When you click the **Knit** but
 
 # Introduction
 
-something something reproducible research mumble, grumble
+something something reproducible research, mumble, grumble, get off my lawn, grumble
 
 ## Linking analysis and publication workflows
 Anecdotally, the separation of the publication from the analysis process has been a  barrier to reproducible research, as it is impossible to ensure the link between source data and final publication.
@@ -21,11 +37,11 @@ This document demonstrates the concept of Literate Programming. Literate program
 Furthermore, this project has been structured so that the data required for this publication are in a subdirectory of the project. This means that all of the files required to reproduce the analysis results can be included in a repository.
 
 ## How Literate Programming was used to write this document
-In this example, an output PDF document and results are generated from a file called _main.rmd_. _main.rmd_ is an [R markdown file](https://rmarkdown.rstudio.com/authoring_basics.html). R markdown is a flavor of markdown that can be processed by the R programming language to run code (i.e, do analysis) and create documentation from the same document. This is done using a package called _knitr_. Instructions for how to run _knitr_ are included in the _howto.md_ file in this repository.
+In this example, an output PDF document and results are generated from a file called _main.rmd_. _main.rmd_ is an [R markdown file](https://rmarkdown.rstudio.com/authoring_basics.html). R markdown is a flavor of markdown that can be processed by the R programming language [@R-base] to run code (i.e, do analysis) and create documentation from the same document. This is done using a package called _knitr_. Instructions for how to run _knitr_ are included in the _howto.md_ file in this repository. A far more detailed guide to writing using R markdown can be found in @R-Markdown-Guide.
 
-The markdown document contains a mixture of documentation and code ``chunks``. The code chunks can be configured so that their outputs are echoed to the document (or not), which in turn allows the output PDF to show only those parts of the data processing that are relevant.
+The markdown document contains a mixture of documentation and so-called ``code chunks''. The code chunks can be configured so that their outputs are echoed to the document (or not), which in turn allows the output PDF to show only those parts of the data processing that are relevant.
 
-I suggest reading the PDF together with the .rmd file and possibly the _knitr_ instructions ^[See https://yihui.name/knitr/]. This will greatly help in understanding what is done in the processing and what makes it to the publication.
+I suggest reading this PDF together with the R markdown file (_main.rmd_) and possibly the _knitr_ instructions ^[See https://yihui.name/knitr/]. This will greatly help in understanding what is done in the processing and what makes it to the publication.
 
 <!-- ## Execute some code without displaying results. -->
 
@@ -33,7 +49,38 @@ I suggest reading the PDF together with the .rmd file and possibly the _knitr_ i
 rm(list = ls())
 ```
 
-## An example of Literate Programming in action
+## But I hate R
+You don't mean that. But just in case you can't handle learning yet another new language, this next statement might interest you.
+
+> "A less well-known fact about R Markdown is that many other languages are also supported, such as Python, Julia, C++, and SQL. The support comes from the knitr package, which has provided a large number of language engines.""
+>
+> --- @R-Markdown-Guide
+
+The currently available language engines are:
+
+```{r languages,}
+names(knitr::knit_engines$get())
+```
+
+So, you have no excuse. You can simply write your code in any of the `r NROW(names(knitr::knit_engines$get()))` languages, and off you go.
+
+# Implementing a coupled analysis and publication workflow
+An analysis and publication workflow usually follows a similar path:
+
+1. Set up the computing environment
+1. Load our own data processing routines
+1. Import data
+1. Plot it
+1. Do some operations
+1. Plot some more
+1. Write.
+1. Format for a journal
+1. Iterate around items 1-9 for a while
+1. Submit
+
+Fortunately, all of this can be captured in a markdown document.
+
+## Setting up the computing environment
 Like most scripts, _main.rmd_ includes a few variables that the user must set to run the analysis.
 
  * The _project.root_ variable defines the location of the files required for this analysis.
@@ -56,17 +103,12 @@ We can also show the value of those variables in the documentation using backtic
  * _project.root_ is `r project.root`
  * _made.by_  is `r made.by`.
 
-## The directory structure
-_working.dir_ is the root directory of the project. There are several important subdirectories:
+We want to change our working directory (_working.dir_ ) to the root directory of the project. We've already set up several important subdirectories:
 
  * /__code__ contains functions required for the analysis
  * /__data__ contains the data files to be analyzed.
-
-We'll also create a new directory:
  
- * /__analysis__ contains the results of the analysis.
-
-<!-- ## We now generate a directory (_output.dir_) to capture the outputs from this analysis.-->
+Let's tell the code where these are.
 
 ```{r define file locations, message=FALSE, echo = FALSE}
 # define the working directory
@@ -80,7 +122,11 @@ data.dir = file.path(project.root,
 #identify code directory
 code.dir = file.path(project.root,
                      "code")
+```
 
+<!-- ## We now generate a directory (_output.dir_) to capture the outputs from this analysis.-->
+
+```{r make output directory, message=FALSE, echo = FALSE}
 # define the path to the directory that we will use to store all of the data
 output.dir = file.path(project.root,
                        "analysis",
@@ -93,12 +139,12 @@ dir.create(output.dir,
 
 ```
 
-# A note on Packages
-Packages are required to supplement base R functions. For example, this script requires the _ggplot2_, _grid_, _knitr_, _RColorBrewer_, _rgdal_, and _stringr_ packages to run. These are called from the script using the _require()_ function. This assumes that the packaages are available on your system.^[For details of how to install packages, see the RStudio help.]
+We'll also create a new directory for the results of the analysis. In this case it can be found at __`r output.dir`__.
 
-N.B. It is likely that the use of packages makes data processing non-repeatable, because the function and output of the packages may change over time. 
+**Note:** Packages are required to supplement base functions in R and many other languages. For example, this script requires the _bookdown_, _ggplot2_, _grid_, _knitr_, _RColorBrewer_, _rgdal_, and _stringr_ packages to run. These are called from the script using the _require()_ function. This assumes that the packaages are available on your system.^[For details of how to install packages, see the RStudio help.] The use of packages represents a challenge to reproducable and repeatable research as it is possible that the function and output of the packages may change over time.
 
 ```{r load packages, message=FALSE, echo = FALSE}
+require(bookdown)
 require(ggplot2)
 
 if(packageVersion("ggplot2") < "2.2.0") {
@@ -111,22 +157,17 @@ require(reshape2)
 require(stringr)
 ```
 
-# Implementing a coupled analysis and publication workflow
-An analysis and publication workflow usually follows a similar path:
-
-
 ## Loading our own routines
-Every data processing workflow requires its own scripts or functions to run. In this example, they are included in the _codes_ directory and sourced during the preparation of this document.
+Every data processing workflow requires its own scripts or functions to run. In this example, they are included in the _codes_ directory and sourced during the preparation of this document. I have included output below to show these codes being called.
 
-```{r source codes, message=FALSE, results='asis', echo = TRUE}
+```{r source codes, message=TRUE, echo = TRUE}
 # source these functions
 code.files = dir(code.dir, pattern = "\\.R$")
 for (file in code.files){
   source(file = file.path(code.dir,file))
+  print(paste0("Sourcing ", file, "."))
 }
-
 ```
-
 
 ## Load the data
 We now analyse the data from the simple data set. In this case, code has been written to load all of the files in the _data.dir_   directory (`r data.dir`). I'm also going to map the three columns in the data files to the variables $x$, $y$, and $z$.^[See https://www.calvin.edu/~rpruim/courses/s341/S17/from-class/MathinRmd.html for more information about including maths in R markdown]
@@ -140,20 +181,20 @@ We now analyse the data from the simple data set. In this case, code has been wr
   # load each file
   for (data.file in data.files){
     # Read this data set;
-    df.in <- read.csv(file.path(data.dir,
+    df.new <- read.csv(file.path(data.dir,
                        data.file),
                       col.names = c("x","y","z"),
              header=TRUE)
     # capture information about this data
-    df.in$source = data.file
+    df.new$source = data.file
     # check for the existance of an aggregate data set. If it's not there, create a new one
-    if (!exists("df.all")){
+    if (!exists("df.in")){
       # theres no data
-      df.all <- df.in
+      df.in <- df.new
     } else {
       # append new data
-      df.all <- rbind(df.all,
-                      df.in)
+      df.in <- rbind(df.in,
+                      df.new)
     }
     }
 ```
@@ -169,16 +210,17 @@ The next step is to plot the input data. In this case we plot all of the input d
 ```
 
 ```{r plot input data, echo= FALSE, fig.show='hold', fig.width = 6, fig.height = 3}
-p <- plotSomething(df=df.all,
+p <- plotSomething(df=df.in,
                    made.by)
+plot(p)
 ```
 
-For convenience, we'll also save a copy of the figure as a .png file to the _analysis_ directory.
+For convenience, we'll also save a copy of the figure as a _.png_ file to the _analysis_ directory.
 
 ```{r save plot of input data, message = FALSE, echo=FALSE}
 ggsave(filename = file.path(output.dir,
                                   "DataAll.png"),
-             plot = p,
+             plot = last_plot(),
              width = 6, 
              height = 4, 
              units = "in", 
@@ -186,18 +228,42 @@ ggsave(filename = file.path(output.dir,
 ```
 
 ## Operate on the data
+At this point we can do any number of operations on the data. For sake of demonstration, let's add 2 to all $x$ values.
+
+```{r add two,}
+df.all <- df.in
+df.all$x <- df.in$x + 2.0
+```
 
 ## Plot the results
+Let's run that _plotSomething_ routine again.
+
+```{r plot modified data, echo= FALSE, fig.show='hold', fig.width = 6, fig.height = 3}
+p <- plotSomething(df=df.all,
+                   made.by)
+plot(p)
+```
+
+And, as we can see, the data have shifted along $x$ by a small amount.
 
 ## Connect processing with publication
-So far we have demonstrate that we can import and manipulate data and plot results. Another important part of a publication is the ability to generate statistics from data and include that in our text.
+So far we have demonstrate that we can import and manipulate data and plot results. Another important part of a publication is the ability to generate statistics or summary information from data and include that in our text.
 
-To demonstrate that, I can calculate that the maximum value of $y$ in the input data sets was `r max(df.all$y)`. This can be confirmed by checking the input data files and 
+To demonstrate that, I can calculate that the maximum value of $y$ in the input data sets was `r max(df.all$y)`. This can be confirmed by checking the input data files. I could also include more complex logic in these statements, for example to say if one statistic is bigger or larger than another.
+
+We sometimes need to include formatted tables in documents. This can be done using the _kable_ function (Table \@ref(tab:dfall)).
+
+<!--- https://bookdown.org/yihui/rmarkdown/bookdown-markdown.html#bookdown-markdown --->
+```{r dfall, results='asis', echo = TRUE}
+knitr::kable(df.all,
+             booktabs=TRUE,
+             caption = "The df.all data frame.")
+```
 
 ## Save the processed data 
-We now write our data to file.
+We now write our processed data to file.
 
-``` {r save data, echo=FALSE}
+```{r save data, echo=TRUE}
 # save the data
 save(list = c("project.root",
               "made.by",
@@ -205,3 +271,19 @@ save(list = c("project.root",
        file = file.path(output.dir,"Data.RData"),
        envir = .GlobalEnv)
 ```
+
+In R it is also possible to save the whole workspace. We can do that here as well:
+
+```{r save workspace, echo=TRUE}
+# save the workspace
+save.image(file=file.path(output.dir,"workspace.RData"))
+```
+
+## Saving packages
+<!--- ? Is it possible to save packages locally the first time they are called and then pick them up there afterwards, instead of from a repo? --->
+
+## Applying Journal formating
+Scientific Journals often have their own formatting requirements. These requirements can still be met using markdown. The mechanics of such a process are beyond the scope of this paper and should probably be done as the last step in the publishing process. The reader is suggested to look at the _rticles_ package and to use the detailed instructions in section 13 of the R Markdown Guide [@R-Markdown-Guide].
+
+# Conclusions
+It is possible to write a single document that captures all of the process of preparing and analysing data and creating a publication to describe that data.
