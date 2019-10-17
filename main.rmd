@@ -39,9 +39,14 @@ Furthermore, this project has been structured so that the data required for this
 ## How Literate Programming was used to write this document
 In this example, an output PDF document and results are generated from a file called _main.rmd_. _main.rmd_ is an [R markdown file](https://rmarkdown.rstudio.com/authoring_basics.html). R markdown is a flavor of markdown that can be processed by the R programming language [@R-base] to run code (i.e, do analysis) and create documentation from the same document. This is done using a package called _knitr_. Instructions for how to run _knitr_ are included in the _howto.md_ file in this repository. A far more detailed guide to writing using R markdown can be found in @R-Markdown-Guide.
 
-The markdown document contains a mixture of documentation -- written in markdown or LaTeX - and so-called ``code chunks'', which here are written in R. The code chunks can be configured so that their outputs are echoed to the document (or not), which in turn allows the output PDF to show only those parts of the data processing that are relevant. You can thus completely hide the data operations in your output PDF and just concentrate on displaying the results.
+The markdown document contains a mixture of documentation -- written in markdown or LaTeX - and so-called ``code chunks'', which here are written in R. The output is a PDF.
 
-I suggest reading this PDF together with the R markdown file (_main.rmd_) and possibly the _knitr_ instructions ^[See https://yihui.name/knitr/]. This will greatly help in understanding what is done in the processing and what makes it to the publication.
+ * This document is written in Pandoc markdown. It is possible to use [other versions](https://bookdown.org/yihui/rmarkdown/markdown-document.html#markdown-variants), including GitHub flavored markdown.
+ * The code chunks can be configured so that their outputs are echoed to the document (or not), which in turn allows the output PDF to show only those parts of the data processing that are relevant. You can thus completely hide the data operations in your output PDF and just concentrate on displaying the results.
+ * It is possible to use other programming languages (see [``But I hate R''](#pleaseNotR))
+ * There are a lot of different possible output formats, including PDF, HTML, Notebooks, and others. See [@R-Markdown-Guide] or  https://bookdown.org/yihui/rmarkdown/documents.html for more information.
+
+I suggest reading this PDF together with the R markdown file (_main.rmd_) and possibly the _knitr_ instructions^[See https://yihui.name/knitr/]. This will greatly help in understanding what is done in the processing and what makes it to the publication.
 
 <!-- ## Execute some code without displaying results. -->
 
@@ -49,7 +54,7 @@ I suggest reading this PDF together with the R markdown file (_main.rmd_) and po
 rm(list = ls())
 ```
 
-## But I hate R
+## But I hate R {#pleaseNotR}
 You don't mean that. But just in case you can't handle learning yet another new language, this next statement might interest you.
 
 > "A less well-known fact about R Markdown is that many other languages are also supported, such as Python, Julia, C++, and SQL. The support comes from the knitr package, which has provided a large number of language engines.""
