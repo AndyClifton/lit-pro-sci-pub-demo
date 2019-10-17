@@ -1,4 +1,4 @@
-\documentclass[10pt,]{article}
+\documentclass[11pt,]{article}
 \usepackage{lmodern}
 \usepackage{amssymb,amsmath}
 \usepackage{ifxetex,ifluatex}
@@ -129,7 +129,7 @@
   \postauthor{\par}
       \predate{\centering\large\emph}
   \postdate{\par}
-    \date{2019-10-17}
+    \date{2019-10-18}
 
 
 \begin{document}
@@ -150,7 +150,7 @@ Something something reproducible research, mumble, grumble, get off my lawn, gru
 
 Anecdotally, the separation of the publication from the analysis process has been a barrier to reproducible research, as it is impossible to ensure the link between source data and final publication.
 
-This document demonstrates the concept of Literate Programming. Literate programming means that the program documentation is complete and contained within the program itself. It is important to note that the documentation is effectively a publication, and thus it is possible to combine data analysis with the creation of a publication in the same file. The use of literate programming therefore mitigates this barrier to reproducible research.
+This document demonstrates the application of Literate Programming to reproducible research. Literate programming means that the program documentation is complete and contained within the program itself \citep{Knuth1984}\footnote{Yes, the same `Knuth' who invented LaTeX}. It is important to note that the documentation is effectively a publication, and thus it is possible to combine data analysis with the creation of a publication in the same file. The use of literate programming therefore mitigates this barrier to reproducible research.
 
 Furthermore, this project has been structured so that the data required for this publication are in a subdirectory of the project. This means that all of the files required to reproduce the analysis results can be included in a repository.
 
@@ -164,13 +164,39 @@ The markdown document contains a mixture of documentation -- written in markdown
 \begin{itemize}
 \tightlist
 \item
-  This document is written in Pandoc markdown. It is possible to use \href{https://bookdown.org/yihui/rmarkdown/markdown-document.html\#markdown-variants}{other versions}, including GitHub flavored markdown.
+  The .rmd document is written in Pandoc markdown, which looks like normal text.
 \item
-  The code chunks can be configured so that their outputs are echoed to the document (or not), which in turn allows the output PDF to show only those parts of the data processing that are relevant. You can thus completely hide the data operations in your output PDF and just concentrate on displaying the results.
+  The document contains code chunks that look like this:
+\end{itemize}
+
+\begin{verbatim}
+```{r, echo=TRUE}
+y = 40 + 2
+print(y) 
+```
+\end{verbatim}
+
+.. which evaluates to
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{y =}\StringTok{ }\DecValTok{40} \OperatorTok{+}\StringTok{ }\DecValTok{2}
+\KeywordTok{print}\NormalTok{(y) }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 42
+\end{verbatim}
+
+\begin{itemize}
+\tightlist
 \item
-  It is possible to use other programming languages (see \protect\hyperlink{pleaseNotR}{``But I hate R''})
+  The code chunks can be configured so that their outputs are echoed to the document (or not), which in turn allows the output PDF to show only those parts of the data processing that are relevant. You can thus completely hide the data operations in your output PDF and just display the results that are relevant.
 \item
-  There are a lot of different possible output formats, including PDF, HTML, Notebooks, and others. See \citep{R-Markdown-Guide} or \url{https://bookdown.org/yihui/rmarkdown/documents.html} for more information.
+  It is possible to use other programming languages by replacing the `\{r,' in the code chunk with the name of another language (see \protect\hyperlink{pleaseNotR}{``But I hate R''})
+\item
+  There are a lot of different possible output formats, including PDF, HTML, Notebooks, other markdown formats, and many others. Corporate formatting can usually be applied without modifying their content. The details of this are out of scope for this paper; instead, see \citep{R-Markdown-Guide} or \url{https://bookdown.org/yihui/rmarkdown/documents.html} for more information.
 \end{itemize}
 
 I suggest reading this PDF together with the R markdown file (\emph{main.rmd}) and possibly the \emph{knitr} instructions\footnote{See \url{https://yihui.name/knitr/}}. This will greatly help in understanding what is done in the processing and what makes it to the publication.
@@ -178,7 +204,7 @@ I suggest reading this PDF together with the R markdown file (\emph{main.rmd}) a
 \hypertarget{pleaseNotR}{%
 \subsection{But I hate R}\label{pleaseNotR}}
 
-You don't mean that. But just in case you can't handle learning yet another new language, this next statement might interest you.
+You don't mean that. But if you can't handle learning yet another new language, this next statement might interest you.
 
 \begin{quote}
 ``A less well-known fact about R Markdown is that many other languages are also supported, such as Python, Julia, C++, and SQL. The support comes from the knitr package, which has provided a large number of language engines.''"
@@ -187,6 +213,16 @@ You don't mean that. But just in case you can't handle learning yet another new 
 \end{quote}
 
 The currently available language engines are:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{require}\NormalTok{(knitr)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Loading required package: knitr
+\end{verbatim}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -298,7 +334,7 @@ Let's tell the code where these are.
 
 We'll also create a new directory for the results of the analysis. In this case it can be found at \textbf{/Users/andyc/Documents/public/GitHub/LiterateDemo/analysis/all}.
 
-\textbf{Note:} Packages are required to supplement base functions in R and many other languages. For example, this script requires the \emph{bookdown}, \emph{ggplot2}, \emph{grid}, \emph{knitr}, \emph{RColorBrewer}, \emph{rgdal}, and \emph{stringr} packages to run. These are called from the script using the \emph{require()} function. This assumes that the packaages are available on your system.\footnote{For details of how to install packages, see the RStudio help.} The use of packages represents a challenge to reproducable and repeatable research as it is possible that the function and output of the packages may change over time.
+\textbf{Note:} Packages are required to supplement base functions in R and many other languages. For example, this script requires the \emph{reticulate}, \emph{bookdown}, \emph{ggplot2}, \emph{grid}, \emph{knitr}, \emph{RColorBrewer}, \emph{rgdal}, and \emph{stringr} packages to run. These are called from the script using the \emph{require()} function. This assumes that the packaages are available on your system.\footnote{For details of how to install packages, see the RStudio help.} The use of packages represents a challenge to reproducable and repeatable research as it is possible that the function and output of the packages may change over time.
 
 \hypertarget{loading-our-own-routines}{%
 \subsection{Loading our own routines}\label{loading-our-own-routines}}
@@ -370,36 +406,37 @@ We sometimes need to include formatted tables in documents. This can be done usi
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{knitr}\OperatorTok{::}\KeywordTok{kable}\NormalTok{(df.all,}
+             \DataTypeTok{format =} \StringTok{"pandoc"}\NormalTok{,}
+             \CommentTok{# format = "markdown", # this breaks cross references}
              \DataTypeTok{booktabs=}\OtherTok{TRUE}\NormalTok{,}
-             \DataTypeTok{caption =} \StringTok{"The df.all data frame."}\NormalTok{)}
+             \DataTypeTok{caption =} \StringTok{"The $df.all$ data frame."}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
-\begin{table}[t]
-
-\caption{\label{tab:dfall}The df.all data frame.}
-\centering
-\begin{tabular}{rrrl}
+\begin{longtable}[]{@{}rrrl@{}}
+\caption{\label{tab:dfall}The \(df.all\) data frame.}\tabularnewline
 \toprule
-x & y & z & source\\
+x & y & z & source\tabularnewline
 \midrule
-3 & 1 & 3 & file1.csv\\
-4 & 4 & 6 & file1.csv\\
-5 & 9 & 9 & file1.csv\\
-6 & 16 & 12 & file1.csv\\
-7 & 25 & 15 & file1.csv\\
-\addlinespace
-12 & 100 & 30 & file1.csv\\
-3 & 1 & 4 & file2.csv\\
-4 & 6 & 8 & file2.csv\\
-5 & 9 & 12 & file2.csv\\
-6 & 12 & 16 & file2.csv\\
-\addlinespace
-7 & 15 & 20 & file2.csv\\
-12 & 30 & 40 & file2.csv\\
+\endfirsthead
+\toprule
+x & y & z & source\tabularnewline
+\midrule
+\endhead
+3 & 1 & 3 & file1.csv\tabularnewline
+4 & 4 & 6 & file1.csv\tabularnewline
+5 & 9 & 9 & file1.csv\tabularnewline
+6 & 16 & 12 & file1.csv\tabularnewline
+7 & 25 & 15 & file1.csv\tabularnewline
+12 & 100 & 30 & file1.csv\tabularnewline
+3 & 1 & 4 & file2.csv\tabularnewline
+4 & 6 & 8 & file2.csv\tabularnewline
+5 & 9 & 12 & file2.csv\tabularnewline
+6 & 12 & 16 & file2.csv\tabularnewline
+7 & 15 & 20 & file2.csv\tabularnewline
+12 & 30 & 40 & file2.csv\tabularnewline
 \bottomrule
-\end{tabular}
-\end{table}
+\end{longtable}
 
 \hypertarget{save-the-processed-data}{%
 \subsection{Save the processed data}\label{save-the-processed-data}}
@@ -434,18 +471,36 @@ In R it is also possible to save the whole workspace. We can do that here as wel
 
 Scientific Journals often have their own formatting requirements. These requirements can still be met using markdown. The mechanics of such a process are beyond the scope of this paper and should probably be done as the last step in the publishing process. The reader is suggested to look at the \emph{rticles} package and to use the detailed instructions in section 13 of the R Markdown Guide \citep{R-Markdown-Guide}.
 
+\hypertarget{packaging-for-storage}{%
+\subsection{Packaging for storage}\label{packaging-for-storage}}
+
+\hypertarget{thoughts-on-audit-trails-and-confidentiality}{%
+\subsection{Thoughts on audit trails and confidentiality}\label{thoughts-on-audit-trails-and-confidentiality}}
+
+Audit trails and confidentiality have implications for data (which might be commercially sensitive) and algorithms (which represent intellectual property).
+
+A first step would be to avoid saving the workspace during the processing. Similarly, care should be taken to not commit any temporary files to a repository.
+
+This document assumed that the data were available in text files that are stored in the same repository. However, it's equally possible that the raw data would have been called from a remote database at run time (or cached) and should be kept confidential. This can be done by not saving them to file. It would be desirable instead to store data IDs that would allow traceability. This could be combined with saving the results of the data processing, rather than the raw data.
+
+Algorithms could be called directly from third party services or accessed via APIs. This shifts the onus to those third parties to provide the tracking required for auditting, but does preserve intellectual property.
+
+All of these considerations can be dealt with in the data processing routines that are included in the source code of this document. There are doubtless many other issues and anyone concerned about this is encouraged to consult an expert.
+
 \hypertarget{conclusions}{%
 \section{Conclusions}\label{conclusions}}
 
-It is possible to write a single document that captures all of the process of preparing and analysing data and creating a publication to describe that data.
+Literate programming allows the creation of a single document that captures all of the process of preparing and analysing data, and creating a publication to describe that data. This is a fundamental requirement of reproducible research.
 
 \hypertarget{referencing-this-document}{%
 \section*{Referencing this document}\label{referencing-this-document}}
 \addcontentsline{toc}{section}{Referencing this document}
 
-This document has been assigned the Digital Object Identifier \href{http://dx.doi.org/10.5281/zenodo.3497450}{10.5281/zenodo.3497450}.
+This document has been assigned the Digital Object Identifier \href{http://dx.doi.org/10.5281/zenodo.3497450}{10.5281/zenodo.3497450}. Citations in a range of formats can be obtained through Zenodo.
 
 \href{https://doi.org/10.5281/zenodo.3497450}{\includegraphics{DOIBadgeGenerator.pdf}}
+
+The source code for this document is available through \href{https://github.com/AndyClifton/LiterateDemo}{github.com/AndyClifton/LiterateDemo}.
 
 \hypertarget{acknowledgements}{%
 \section*{Acknowledgements}\label{acknowledgements}}

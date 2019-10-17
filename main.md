@@ -1,7 +1,7 @@
 ---
 title: "A demonstration of combined scientific data processing and publication using Literate Programming in R"
 author: "Andy Clifton"
-date: '`r Sys.Date()`'
+date: '2019-10-17'
 output:
   bookdown::pdf_document2:
     latex_engine: pdflatex
@@ -33,7 +33,7 @@ Something something reproducible research, mumble, grumble, get off my lawn, gru
 ## Linking analysis and publication workflows
 Anecdotally, the separation of the publication from the analysis process has been a barrier to reproducible research, as it is impossible to ensure the link between source data and final publication.
 
-This document demonstrates the application of Literate Programming to reproducible research. Literate programming means that the program documentation is complete and contained within the program itself [@Knuth1984]^[Yes, the same `Knuth' who invented LaTeX]. It is important to note that the documentation is effectively a publication, and thus it is possible to combine data analysis with the creation of a publication in the same file. The use of literate programming therefore mitigates this barrier to reproducible research.
+This document demonstrates the application of Literate Programming to reproducible research [@Knuth1984]. Literate programming means that the program documentation is complete and contained within the program itself. It is important to note that the documentation is effectively a publication, and thus it is possible to combine data analysis with the creation of a publication in the same file. The use of literate programming therefore mitigates this barrier to reproducible research.
 
 Furthermore, this project has been structured so that the data required for this publication are in a subdirectory of the project. This means that all of the files required to reproduce the analysis results can be included in a repository.
 
@@ -42,33 +42,16 @@ In this example, an output PDF document and results are generated from a file ca
 
 The markdown document contains a mixture of documentation -- written in markdown or LaTeX - and so-called ``code chunks'', which here are written in R. The output is a PDF.
 
- * The .rmd document is written in Pandoc markdown, which looks like normal text.
- * The document contains code chunks that look like this:
-
-````
-`r ''````{r, echo=TRUE}
-y = 40 + 2
-print(y) 
-```
-````
-.. which evaluates to
-
-```{r y1, echo=TRUE}
-y = 40 + 2
-print(y) 
-```
- 
- * The code chunks can be configured so that their outputs are echoed to the document (or not), which in turn allows the output PDF to show only those parts of the data processing that are relevant. You can thus completely hide the data operations in your output PDF and just display the results that are relevant.
- * It is possible to use other programming languages by replacing the `{r,' in the code chunk with the name of another language (see [``But I hate R''](#pleaseNotR))
- * There are a lot of different possible output formats, including PDF, HTML, Notebooks, other markdown formats, and many others. Corporate formatting can usually be applied without modifying their content. The details of this are out of scope for this paper; instead, see [@R-Markdown-Guide] or  https://bookdown.org/yihui/rmarkdown/documents.html for more information. 
+ * The .rmd document is written in Pandoc markdown. It is possible to export [other types of markdown](https://bookdown.org/yihui/rmarkdown/markdown-document.html#markdown-variants), including GitHub flavored markdown.
+ * The code chunks can be configured so that their outputs are echoed to the document (or not), which in turn allows the output PDF to show only those parts of the data processing that are relevant. You can thus completely hide the data operations in your output PDF and just concentrate on displaying the results.
+ * It is possible to use other programming languages (see [``But I hate R''](#pleaseNotR))
+ * There are a lot of different possible output formats, including PDF, HTML, Notebooks, and others. See [@R-Markdown-Guide] or  https://bookdown.org/yihui/rmarkdown/documents.html for more information.
 
 I suggest reading this PDF together with the R markdown file (_main.rmd_) and possibly the _knitr_ instructions^[See https://yihui.name/knitr/]. This will greatly help in understanding what is done in the processing and what makes it to the publication.
 
 <!-- ## Execute some code without displaying results. -->
 
-```{r clean up, echo = FALSE}
-rm(list = ls())
-```
+
 
 ## But I hate R {#pleaseNotR}
 You don't mean that. But if you can't handle learning yet another new language, this next statement might interest you.
@@ -79,13 +62,55 @@ You don't mean that. But if you can't handle learning yet another new language, 
 
 The currently available language engines are:
 
-```{r languages,}
-require(knitr)
+
+```r
 names(knitr::knit_engines$get())
 ```
 
-So, you have no excuse. You can simply write your code in any of the `r NROW(names(knitr::knit_engines$get()))` languages, and off you go.
+```
+##  [1] "awk"         "bash"        "coffee"      "gawk"        "groovy"     
+##  [6] "haskell"     "lein"        "mysql"       "node"        "octave"     
+## [11] "perl"        "psql"        "Rscript"     "ruby"        "sas"        
+## [16] "scala"       "sed"         "sh"          "stata"       "zsh"        
+## [21] "highlight"   "Rcpp"        "tikz"        "dot"         "c"          
+## [26] "fortran"     "fortran95"   "asy"         "cat"         "asis"       
+## [31] "stan"        "block"       "block2"      "js"          "css"        
+## [36] "sql"         "go"          "python"      "julia"       "sass"       
+## [41] "scss"        "theorem"     "lemma"       "corollary"   "proposition"
+## [46] "conjecture"  "definition"  "example"     "exercise"    "proof"      
+## [51] "remark"      "solution"
+```
 
+So, you have no excuse. You can simply write your code in any of the 52 languages, and off you go.
+
+## Coding chunks
+
+Let's do some coding in R:
+
+
+```r
+y = 40 + 2
+print(y) 
+```
+
+```
+## [1] 42
+```
+
+... and here's some python:
+
+
+
+```python
+y = 6 + 7
+print(y) 
+```
+
+```
+## 13
+```
+
+We have to be a bit careful as the python and r data are separate. The value of `y` in the R session is 42. It is not the same `y` as the one in python (13).
 
 # Implementing a coupled analysis and publication workflow
 An analysis and publication workflow usually follows a similar path:
@@ -111,7 +136,8 @@ Like most scripts, _main.rmd_ includes a few variables that the user must set to
 
 An advantage of _knitr_ is that we can simply execute the code and show the code and results inline:
 
-```{r user-defined options, message=TRUE, results = 'hold'}
+
+```r
 # Where can files be found?
 project.root <- file.path('/Users/andyc/Documents/public/GitHub/LiterateDemo')
 project.root
@@ -121,10 +147,15 @@ made.by = "A. Clifton"
 made.by
 ```
 
+```
+## [1] "/Users/andyc/Documents/public/GitHub/LiterateDemo"
+## [1] "A. Clifton"
+```
+
 We can also show the value of those variables in the documentation using backticks around the variable names in the markdown.
 
- * _project.root_ is `r project.root`
- * _made.by_  is `r made.by`.
+ * _project.root_ is /Users/andyc/Documents/public/GitHub/LiterateDemo
+ * _made.by_  is A. Clifton.
 
 We want to change our working directory (_working.dir_ ) to the root directory of the project. We've already set up several important subdirectories:
 
@@ -133,56 +164,23 @@ We want to change our working directory (_working.dir_ ) to the root directory o
 
 Let's tell the code where these are.
 
-```{r define file locations, message=FALSE, echo = FALSE}
-# define the working directory
-working.dir <- project.root
-setwd(working.dir)
 
-#identify data directory
-data.dir = file.path(project.root,
-                     "data")
-
-#identify code directory
-code.dir = file.path(project.root,
-                     "code")
-```
 
 <!-- ## We now generate a directory (_output.dir_) to capture the outputs from this analysis.-->
 
-```{r make output directory, message=FALSE, echo = FALSE}
-# define the path to the directory that we will use to store all of the data
-output.dir = file.path(project.root,
-                       "analysis",
-                       "all")
 
-# create this directory if it doesn't already exist
-dir.create(output.dir,
-           showWarnings = FALSE,
-           recursive = TRUE)
 
-```
-
-We'll also create a new directory for the results of the analysis. In this case it can be found at __`r output.dir`__.
+We'll also create a new directory for the results of the analysis. In this case it can be found at __/Users/andyc/Documents/public/GitHub/LiterateDemo/analysis/all__.
 
 **Note:** Packages are required to supplement base functions in R and many other languages. For example, this script requires the _reticulate_, _bookdown_, _ggplot2_, _grid_, _knitr_, _RColorBrewer_, _rgdal_, and _stringr_ packages to run. These are called from the script using the _require()_ function. This assumes that the packaages are available on your system.^[For details of how to install packages, see the RStudio help.] The use of packages represents a challenge to reproducable and repeatable research as it is possible that the function and output of the packages may change over time.
 
-```{r load packages, message=FALSE, echo = FALSE}
-require(bookdown)
-require(ggplot2)
 
-if(packageVersion("ggplot2") < "2.2.0") {
-    stop("Need package:ggplot2 2.2 or higher for labs function")
-}
-
-require(grid)
-require(reshape2)
-require(stringr)
-```
 
 ## Loading our own routines
 Every data processing workflow requires its own scripts or functions to run. In this example, they are included in the _codes_ directory and sourced during the preparation of this document. I have included output below to show these codes being called.
 
-```{r source codes, message=TRUE, echo = TRUE}
+
+```r
 # source these functions
 code.files = dir(code.dir, pattern = "\\.R$")
 for (file in code.files){
@@ -191,68 +189,35 @@ for (file in code.files){
 }
 ```
 
-## Load the data
-We now analyse the data from the simple data set. In this case, code has been written to load all of the files in the _data.dir_   directory (`r data.dir`). I'm also going to map the three columns in the data files to the variables $x$, $y$, and $z$.^[See https://www.calvin.edu/~rpruim/courses/s341/S17/from-class/MathinRmd.html for more information about including maths in R markdown]
-
-```{r load individual data files, results='asis', echo = FALSE}
-  # identify the data sets that we have available
-  data.files = dir(data.dir,
-                   recursive = TRUE,
-                   pattern = "\\.csv$")
-
-  # load each file
-  for (data.file in data.files){
-    # Read this data set;
-    df.new <- read.csv(file.path(data.dir,
-                       data.file),
-                      col.names = c("x","y","z"),
-             header=TRUE)
-    # capture information about this data
-    df.new$source = data.file
-    # check for the existance of an aggregate data set. If it's not there, create a new one
-    if (!exists("df.in")){
-      # theres no data
-      df.in <- df.new
-    } else {
-      # append new data
-      df.in <- rbind(df.in,
-                      df.new)
-    }
-    }
 ```
+## [1] "Sourcing cleanPlot.R."
+## [1] "Sourcing plotInfoLabel.R."
+## [1] "Sourcing plotSomething.R."
+## [1] "Sourcing theme_Literate.R."
+```
+
+## Load the data
+We now analyse the data from the simple data set. In this case, code has been written to load all of the files in the _data.dir_   directory (/Users/andyc/Documents/public/GitHub/LiterateDemo/data). I'm also going to map the three columns in the data files to the variables $x$, $y$, and $z$.^[See https://www.calvin.edu/~rpruim/courses/s341/S17/from-class/MathinRmd.html for more information about including maths in R markdown]
+
+
 
 ## Plot input data
 The next step is to plot the input data. In this case we plot all of the input data together in one plot, but there are many different possibilities. Figures can also be given a consistent look and feel through ggplot's themes.
 
 <!-- Configure graphics -->
-```{r configure graphics, message=FALSE, echo = FALSE}
-# configure graphics appearance
-#theme_set(theme_Literate(base_size = 8,
-#                         base_family = "sans"))
-```
 
-```{r plot input data, echo= FALSE, fig.show='hold', fig.width = 6, fig.height = 3}
-p <- plotSomething(df=df.in,
-                   made.by)
-plot(p)
-```
+
+![plot of chunk plot input data](figure/plot input data-1.png)
 
 For convenience, we'll also save a copy of the figure as a _.png_ file to the _analysis_ directory.
 
-```{r save plot of input data, message = FALSE, echo=FALSE}
-ggsave(filename = file.path(output.dir,
-                                  "DataAll.png"),
-             plot = last_plot(),
-             width = 6,
-             height = 4,
-             units = "in",
-             dpi = 300)
-```
+
 
 ## Operate on the data
 At this point we can do any number of operations on the data. For sake of demonstration, let's add 2 to all $x$ values.
 
-```{r add two,}
+
+```r
 df.all <- df.in
 df.all$x <- df.in$x + 2.0
 ```
@@ -260,34 +225,48 @@ df.all$x <- df.in$x + 2.0
 ## Plot the results
 Let's run that _plotSomething_ routine again.
 
-```{r plot modified data, echo= FALSE, fig.show='hold', fig.width = 6, fig.height = 3}
-p <- plotSomething(df=df.all,
-                   made.by)
-plot(p)
-```
+![plot of chunk plot modified data](figure/plot modified data-1.png)
 
 And, as we can see, the data have shifted along $x$ by a small amount.
 
 ## Connect processing with publication
 So far we have demonstrate that we can import and manipulate data and plot results. Another important part of a publication is the ability to generate statistics or summary information from data and include that in our text.
 
-To demonstrate that, I can calculate that the maximum value of $y$ in the input data sets was `r max(df.all$y)`. This can be confirmed by checking the input data files. I could also include more complex logic in these statements, for example to say if one statistic is bigger or larger than another.
+To demonstrate that, I can calculate that the maximum value of $y$ in the input data sets was 100. This can be confirmed by checking the input data files. I could also include more complex logic in these statements, for example to say if one statistic is bigger or larger than another.
 
 We sometimes need to include formatted tables in documents. This can be done using the _kable_ function (Table \@ref(tab:dfall)).
 
 <!--- https://bookdown.org/yihui/rmarkdown/bookdown-markdown.html#bookdown-markdown --->
-```{r dfall, echo = TRUE}
+
+```r
 knitr::kable(df.all,
-             format = "pandoc",
-             # format = "markdown", # this breaks cross references
+             format = "markdown",
              booktabs=TRUE,
-             caption = "The $df.all$ data frame.")
+             caption = "The df.all data frame.")
 ```
+
+
+
+|  x|   y|  z|source    |
+|--:|---:|--:|:---------|
+|  3|   1|  3|file1.csv |
+|  4|   4|  6|file1.csv |
+|  5|   9|  9|file1.csv |
+|  6|  16| 12|file1.csv |
+|  7|  25| 15|file1.csv |
+| 12| 100| 30|file1.csv |
+|  3|   1|  4|file2.csv |
+|  4|   6|  8|file2.csv |
+|  5|   9| 12|file2.csv |
+|  6|  12| 16|file2.csv |
+|  7|  15| 20|file2.csv |
+| 12|  30| 40|file2.csv |
 
 ## Save the processed data
 We now write our processed data to file.
 
-```{r save data, echo=TRUE}
+
+```r
 # save the data
 save(list = c("project.root",
               "made.by",
@@ -298,7 +277,8 @@ save(list = c("project.root",
 
 In R it is also possible to save the whole workspace. We can do that here as well:
 
-```{r save workspace, echo=TRUE}
+
+```r
 # save the workspace
 save.image(file=file.path(output.dir,"workspace.RData"))
 ```
@@ -309,24 +289,11 @@ save.image(file=file.path(output.dir,"workspace.RData"))
 ## Applying Journal formating
 Scientific Journals often have their own formatting requirements. These requirements can still be met using markdown. The mechanics of such a process are beyond the scope of this paper and should probably be done as the last step in the publishing process. The reader is suggested to look at the _rticles_ package and to use the detailed instructions in section 13 of the R Markdown Guide [@R-Markdown-Guide].
 
-## Packaging for storage
-
-## Thoughts on audit trails and confidentiality
-Audit trails and confidentiality have implications for data (which might be commercially sensitive) and algorithms (which represent intellectual property).
-
-A first step would be to avoid saving the workspace during the processing. Similarly, care should be taken to not commit any temporary files to a repository.
-
-This document assumed that the data were available in text files that are stored in the same repository. However, it's equally possible that the raw data would have been called from a remote database at run time (or cached) and should be kept confidential. This can be done by not saving them to file. It would be desirable instead to store data IDs that would allow traceability. This could be combined with saving the results of the data processing, rather than the raw data.
-
-Algorithms could be called directly from third party services or accessed via APIs. This shifts the onus to those third parties to provide the tracking required for auditting, but does preserve intellectual property.
-
-All of these considerations can be dealt with in the data processing routines that are included in the source code of this document. There are doubtless many other issues and anyone concerned about this is encouraged to consult an expert.
-
 # Conclusions
-Literate programming allows the creation of a single document that captures all of the process of preparing and analysing data, and creating a publication to describe that data. This is a fundamental requirement of reproducible research.
+It is possible to write a single document that captures all of the process of preparing and analysing data and creating a publication to describe that data.
 
 # Referencing this document {-}
-This document has been assigned the Digital Object Identifier [10.5281/zenodo.3497450](http://dx.doi.org/10.5281/zenodo.3497450). Citations in a range of formats can be obtained through Zenodo.
+This document has been assigned the Digital Object Identifier [10.5281/zenodo.3497450](http://dx.doi.org/10.5281/zenodo.3497450). Full citation information in a range of formats can be obtained through Zenodo.
 
 [![DOI](DOIBadgeGenerator.pdf)](https://doi.org/10.5281/zenodo.3497450)
 
