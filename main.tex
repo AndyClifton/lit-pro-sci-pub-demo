@@ -150,7 +150,7 @@ Something something reproducible research, mumble, grumble, get off my lawn, gru
 
 Anecdotally, the separation of the publication from the analysis process has been a barrier to reproducible research, as it is impossible to ensure the link between source data and final publication.
 
-This document demonstrates the application of Literate Programming to reproducible research. Literate programming means that the program documentation is complete and contained within the program itself \citep{Knuth1984}\footnote{Yes, the same `Knuth' who invented LaTeX}. It is important to note that the documentation is effectively a publication, and thus it is possible to combine data analysis with the creation of a publication in the same file. The use of literate programming therefore mitigates this barrier to reproducible research.
+This document demonstrates the application of Literate Programming to reproducible research. Literate programming means that the program documentation is complete and contained within the program itself \citep{Knuth1984}\footnote{Yes, that's the same `Knuth' who invented LaTeX}. It is important to note that the documentation is effectively a publication, and thus it is possible to combine data analysis with the creation of a publication in the same file. The use of literate programming therefore mitigates this barrier to reproducible research.
 
 Furthermore, this project has been structured so that the data required for this publication are in a subdirectory of the project. This means that all of the files required to reproduce the analysis results can be included in a repository.
 
@@ -172,7 +172,7 @@ The markdown document contains a mixture of documentation -- written in markdown
 \begin{verbatim}
 ```{r, echo=TRUE}
 y = 40 + 2
-print(y) 
+print(y)
 ```
 \end{verbatim}
 
@@ -181,7 +181,7 @@ print(y)
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{y =}\StringTok{ }\DecValTok{40} \OperatorTok{+}\StringTok{ }\DecValTok{2}
-\KeywordTok{print}\NormalTok{(y) }
+\KeywordTok{print}\NormalTok{(y)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -194,7 +194,7 @@ print(y)
 \item
   The code chunks can be configured so that their outputs are echoed to the document (or not), which in turn allows the output PDF to show only those parts of the data processing that are relevant. You can thus completely hide the data operations in your output PDF and just display the results that are relevant.
 \item
-  It is possible to use other programming languages by replacing the `\{r,' in the code chunk with the name of another language (see \protect\hyperlink{pleaseNotR}{``But I hate R''})
+  It is possible to use other programming languages by replacing the `\{r,' in the code chunk with the name of another language (see \protect\hyperlink{pleaseNotR}{``Please not R''})
 \item
   There are a lot of different possible output formats, including PDF, HTML, Notebooks, other markdown formats, and many others. Corporate formatting can usually be applied without modifying their content. The details of this are out of scope for this paper; instead, see \citep{R-Markdown-Guide} or \url{https://bookdown.org/yihui/rmarkdown/documents.html} for more information.
 \end{itemize}
@@ -202,9 +202,9 @@ print(y)
 I suggest reading this PDF together with the R markdown file (\emph{main.rmd}) and possibly the \emph{knitr} instructions\footnote{See \url{https://yihui.name/knitr/}}. This will greatly help in understanding what is done in the processing and what makes it to the publication.
 
 \hypertarget{pleaseNotR}{%
-\subsection{But I hate R}\label{pleaseNotR}}
+\subsection{Please not R}\label{pleaseNotR}}
 
-You don't mean that. But if you can't handle learning yet another new language, this next statement might interest you.
+If you can't handle learning yet another new language, this next statement might interest you:
 
 \begin{quote}
 ``A less well-known fact about R Markdown is that many other languages are also supported, such as Python, Julia, C++, and SQL. The support comes from the knitr package, which has provided a large number of language engines.''"
@@ -217,15 +217,6 @@ The currently available language engines are:
 \begin{Shaded}
 \begin{Highlighting}[]
 \KeywordTok{require}\NormalTok{(knitr)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## Loading required package: knitr
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
 \KeywordTok{names}\NormalTok{(knitr}\OperatorTok{::}\NormalTok{knit_engines}\OperatorTok{$}\KeywordTok{get}\NormalTok{())}
 \end{Highlighting}
 \end{Shaded}
@@ -244,7 +235,7 @@ The currently available language engines are:
 ## [51] "remark"      "solution"
 \end{verbatim}
 
-So, you have no excuse. You can simply write your code in any of the 52 languages, and off you go.
+So, you have no excuse. You can write your code in any of those 52 languages, and off you go. A possible source of confusion might be that the rest of the document is R-flavoured markdown, but honestly there's not really that much R about it.
 
 \hypertarget{implementing-a-coupled-analysis-and-publication-workflow}{%
 \section{Implementing a coupled analysis and publication workflow}\label{implementing-a-coupled-analysis-and-publication-workflow}}
@@ -257,6 +248,8 @@ An analysis and publication workflow usually follows a similar path:
 \item
   Set up the computing environment
 \item
+  Load some external packages
+\item
   Load our own data processing routines
 \item
   Import data
@@ -267,11 +260,11 @@ An analysis and publication workflow usually follows a similar path:
 \item
   Plot some more
 \item
-  Write.
+  Write
 \item
   Format for a journal
 \item
-  Iterate around items 1-9 for a while
+  Iterate around items 1-10 for a while
 \item
   Submit
 \end{enumerate}
@@ -296,7 +289,7 @@ An advantage of \emph{knitr} is that we can simply execute the code and show the
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{# Where can files be found?}
-\NormalTok{project.root <-}\StringTok{ }\KeywordTok{file.path}\NormalTok{(}\StringTok{'/Users/andyc/Documents/public/GitHub/LiterateDemo'}\NormalTok{)}
+\NormalTok{project.root <-}\StringTok{ }\KeywordTok{file.path}\NormalTok{(}\StringTok{'/Users/andyc/Documents/public/GitHub/LiterateSciencePublishingDemo'}\NormalTok{)}
 \NormalTok{project.root}
 
 \CommentTok{# Who ran this script}
@@ -306,21 +299,21 @@ An advantage of \emph{knitr} is that we can simply execute the code and show the
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "/Users/andyc/Documents/public/GitHub/LiterateDemo"
+## [1] "/Users/andyc/Documents/public/GitHub/LiterateSciencePublishingDemo"
 ## [1] "A. Clifton"
 \end{verbatim}
 
-We can also show the value of those variables in the documentation using backticks around the variable names in the markdown.
+We can also show the value of those variables in the documentation using a relatively simple format, e.g. \texttt{r\ \_project.root\_}. This lets us then record in the documentation that
 
 \begin{itemize}
 \tightlist
 \item
-  \emph{project.root} is /Users/andyc/Documents/public/GitHub/LiterateDemo
+  \emph{project.root} is /Users/andyc/Documents/public/GitHub/LiterateSciencePublishingDemo
 \item
   \emph{made.by} is A. Clifton.
 \end{itemize}
 
-We want to change our working directory (\emph{working.dir} ) to the root directory of the project. We've already set up several important subdirectories:
+We've already set up several important subdirectories in \emph{project.root}:
 
 \begin{itemize}
 \tightlist
@@ -330,11 +323,14 @@ We want to change our working directory (\emph{working.dir} ) to the root direct
   /\textbf{data} contains the data files to be analyzed.
 \end{itemize}
 
-Let's tell the code where these are.
+Let's tell the code where these are. We can also change our the working directory (\emph{working.dir} ) to the root directory of the project.
 
-We'll also create a new directory for the results of the analysis. In this case it can be found at \textbf{/Users/andyc/Documents/public/GitHub/LiterateDemo/analysis/all}.
+We'll also create a new directory for the results of the analysis.
 
-\textbf{Note:} Packages are required to supplement base functions in R and many other languages. For example, this script requires the \emph{reticulate}, \emph{bookdown}, \emph{ggplot2}, \emph{grid}, \emph{knitr}, \emph{RColorBrewer}, \emph{rgdal}, and \emph{stringr} packages to run. These are called from the script using the \emph{require()} function. This assumes that the packaages are available on your system.\footnote{For details of how to install packages, see the RStudio help.} The use of packages represents a challenge to reproducable and repeatable research as it is possible that the function and output of the packages may change over time.
+Looking at your file system, you'll see there is now a new directory called \textbf{/Users/andyc/Documents/public/GitHub/LiterateSciencePublishingDemo/analysis/all}.
+
+\hypertarget{load-packages}{%
+\subsection{Load packages}\label{load-packages}}
 
 \hypertarget{loading-our-own-routines}{%
 \subsection{Loading our own routines}\label{loading-our-own-routines}}
@@ -362,7 +358,7 @@ Every data processing workflow requires its own scripts or functions to run. In 
 \hypertarget{load-the-data}{%
 \subsection{Load the data}\label{load-the-data}}
 
-We now analyse the data from the simple data set. In this case, code has been written to load all of the files in the \emph{data.dir} directory (/Users/andyc/Documents/public/GitHub/LiterateDemo/data). I'm also going to map the three columns in the data files to the variables \(x\), \(y\), and \(z\).\footnote{See \url{https://www.calvin.edu/~rpruim/courses/s341/S17/from-class/MathinRmd.html} for more information about including maths in R markdown}
+We now analyse the data from the simple data set. In this case, code has been written to load all of the files in the \emph{data.dir} directory (/Users/andyc/Documents/public/GitHub/LiterateSciencePublishingDemo/data). I'm also going to map the three columns in the data files to the variables \(x\), \(y\), and \(z\).\footnote{See \url{https://www.calvin.edu/~rpruim/courses/s341/S17/from-class/MathinRmd.html} for more information about including maths in R markdown}
 
 \hypertarget{plot-input-data}{%
 \subsection{Plot input data}\label{plot-input-data}}
@@ -466,13 +462,12 @@ In R it is also possible to save the whole workspace. We can do that here as wel
 \hypertarget{saving-packages}{%
 \subsection{Saving packages}\label{saving-packages}}
 
+Packages are required to supplement base functions in R and many other languages. For example, this script requires the \emph{reticulate}, \emph{bookdown}, \emph{ggplot2}, \emph{grid}, \emph{knitr}, \emph{RColorBrewer}, \emph{rgdal}, and \emph{stringr} packages to run. These are called from the script using the \emph{require()} function. This assumes that the packages are available on your system.\footnote{For details of how to install packages, see the RStudio help.} The use of packages represents a challenge to reproducable and repeatable research as it is possible that the function and output of the packages may change over time.
+
 \hypertarget{applying-journal-formating}{%
 \subsection{Applying Journal formating}\label{applying-journal-formating}}
 
 Scientific Journals often have their own formatting requirements. These requirements can still be met using markdown. The mechanics of such a process are beyond the scope of this paper and should probably be done as the last step in the publishing process. The reader is suggested to look at the \emph{rticles} package and to use the detailed instructions in section 13 of the R Markdown Guide \citep{R-Markdown-Guide}.
-
-\hypertarget{packaging-for-storage}{%
-\subsection{Packaging for storage}\label{packaging-for-storage}}
 
 \hypertarget{thoughts-on-audit-trails-and-confidentiality}{%
 \subsection{Thoughts on audit trails and confidentiality}\label{thoughts-on-audit-trails-and-confidentiality}}
@@ -487,6 +482,11 @@ Algorithms could be called directly from third party services or accessed via AP
 
 All of these considerations can be dealt with in the data processing routines that are included in the source code of this document. There are doubtless many other issues and anyone concerned about this is encouraged to consult an expert.
 
+\hypertarget{packaging-for-storage}{%
+\subsection{Packaging for storage}\label{packaging-for-storage}}
+
+A simple solution to repeatability and reproducability may be to have a generic ``data processing'' image of a computer system, e.g.~as a Docker image, that is started for each new project and used \emph{only} for that project. This clean system is then used for one data processing task which is managed through a file such as the one you are reading. When the project is complete, the image is simply stored for as long as required. This would also avoid problems associated with changes introduced by package and system updates. A drawback to this approach would be the need to migrate the data every 5 years or so to a new system, which would be required to avoid data being stranded on old software.
+
 \hypertarget{conclusions}{%
 \section{Conclusions}\label{conclusions}}
 
@@ -498,9 +498,9 @@ Literate programming allows the creation of a single document that captures all 
 
 This document has been assigned the Digital Object Identifier \href{http://dx.doi.org/10.5281/zenodo.3497450}{10.5281/zenodo.3497450}. Citations in a range of formats can be obtained through Zenodo.
 
-\href{https://doi.org/10.5281/zenodo.3497450}{\includegraphics{DOIBadgeGenerator.pdf}}
+\href{https://doi.org/10.5281/zenodo.3497450}{\includegraphics{DOIBadge3497450.pdf}}
 
-The source code for this document is available through \href{https://github.com/AndyClifton/LiterateDemo}{github.com/AndyClifton/LiterateDemo}.
+The source code for this document is available through \href{https://github.com/AndyClifton/LiterateSciencePublishingDemo}{github.com/AndyClifton/LiterateDemo}.
 
 \hypertarget{acknowledgements}{%
 \section*{Acknowledgements}\label{acknowledgements}}

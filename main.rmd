@@ -10,8 +10,8 @@ output:
     fig_caption: true
     keep_tex: true
     citation_package: natbib
-#  md_document:
-#    variant: gfm
+  md_document:
+    variant: gfm
 fontsize: 11pt
 geometry: margin=1in
 graphics: yes
@@ -33,7 +33,7 @@ Something something reproducible research, mumble, grumble, get off my lawn, gru
 ## Linking analysis and publication workflows
 Anecdotally, the separation of the publication from the analysis process has been a barrier to reproducible research, as it is impossible to ensure the link between source data and final publication.
 
-This document demonstrates the application of Literate Programming to reproducible research. Literate programming means that the program documentation is complete and contained within the program itself [@Knuth1984]^[Yes, the same `Knuth' who invented LaTeX]. It is important to note that the documentation is effectively a publication, and thus it is possible to combine data analysis with the creation of a publication in the same file. The use of literate programming therefore mitigates this barrier to reproducible research.
+This document demonstrates the application of Literate Programming to reproducible research. Literate programming means that the program documentation is complete and contained within the program itself [@Knuth1984]^[Yes, that's the same `Knuth' who invented LaTeX]. It is important to note that the documentation is effectively a publication, and thus it is possible to combine data analysis with the creation of a publication in the same file. The use of literate programming therefore mitigates this barrier to reproducible research.
 
 Furthermore, this project has been structured so that the data required for this publication are in a subdirectory of the project. This means that all of the files required to reproduce the analysis results can be included in a repository.
 
@@ -48,19 +48,19 @@ The markdown document contains a mixture of documentation -- written in markdown
 ````
 `r ''````{r, echo=TRUE}
 y = 40 + 2
-print(y) 
+print(y)
 ```
 ````
 .. which evaluates to
 
 ```{r y1, echo=TRUE}
 y = 40 + 2
-print(y) 
+print(y)
 ```
- 
+
  * The code chunks can be configured so that their outputs are echoed to the document (or not), which in turn allows the output PDF to show only those parts of the data processing that are relevant. You can thus completely hide the data operations in your output PDF and just display the results that are relevant.
- * It is possible to use other programming languages by replacing the `{r,' in the code chunk with the name of another language (see [``But I hate R''](#pleaseNotR))
- * There are a lot of different possible output formats, including PDF, HTML, Notebooks, other markdown formats, and many others. Corporate formatting can usually be applied without modifying their content. The details of this are out of scope for this paper; instead, see [@R-Markdown-Guide] or  https://bookdown.org/yihui/rmarkdown/documents.html for more information. 
+ * It is possible to use other programming languages by replacing the `{r,' in the code chunk with the name of another language (see [``Please not  R''](#pleaseNotR))
+ * There are a lot of different possible output formats, including PDF, HTML, Notebooks, other markdown formats, and many others. Corporate formatting can usually be applied without modifying their content. The details of this are out of scope for this paper; instead, see [@R-Markdown-Guide] or  https://bookdown.org/yihui/rmarkdown/documents.html for more information.
 
 I suggest reading this PDF together with the R markdown file (_main.rmd_) and possibly the _knitr_ instructions^[See https://yihui.name/knitr/]. This will greatly help in understanding what is done in the processing and what makes it to the publication.
 
@@ -70,8 +70,8 @@ I suggest reading this PDF together with the R markdown file (_main.rmd_) and po
 rm(list = ls())
 ```
 
-## But I hate R {#pleaseNotR}
-You don't mean that. But if you can't handle learning yet another new language, this next statement might interest you.
+## Please not R {#pleaseNotR}
+If you can't handle learning yet another new language, this next statement might interest you:
 
 > "A less well-known fact about R Markdown is that many other languages are also supported, such as Python, Julia, C++, and SQL. The support comes from the knitr package, which has provided a large number of language engines.""
 >
@@ -84,21 +84,21 @@ require(knitr)
 names(knitr::knit_engines$get())
 ```
 
-So, you have no excuse. You can simply write your code in any of the `r NROW(names(knitr::knit_engines$get()))` languages, and off you go.
-
+So, you have no excuse. You can write your code in any of those `r NROW(names(knitr::knit_engines$get()))` languages, and off you go. A possible source of confusion might be that the rest of the document is R-flavoured markdown, but honestly there's not really that much R about it.
 
 # Implementing a coupled analysis and publication workflow
 An analysis and publication workflow usually follows a similar path:
 
 1. Set up the computing environment
+1. Load some external packages
 1. Load our own data processing routines
 1. Import data
 1. Plot it
 1. Do some operations
 1. Plot some more
-1. Write.
+1. Write
 1. Format for a journal
-1. Iterate around items 1-9 for a while
+1. Iterate around items 1-10 for a while
 1. Submit
 
 Fortunately, all of this can be captured in a markdown document.
@@ -113,7 +113,7 @@ An advantage of _knitr_ is that we can simply execute the code and show the code
 
 ```{r user-defined options, message=TRUE, results = 'hold'}
 # Where can files be found?
-project.root <- file.path('/Users/andyc/Documents/public/GitHub/LiterateDemo')
+project.root <- file.path('/Users/andyc/Documents/public/GitHub/LiterateSciencePublishingDemo')
 project.root
 
 # Who ran this script
@@ -121,17 +121,17 @@ made.by = "A. Clifton"
 made.by
 ```
 
-We can also show the value of those variables in the documentation using backticks around the variable names in the markdown.
+We can also show the value of those variables in the documentation using a relatively simple format, e.g. ` r _project.root_ `. This lets us then record in the documentation that
 
  * _project.root_ is `r project.root`
  * _made.by_  is `r made.by`.
 
-We want to change our working directory (_working.dir_ ) to the root directory of the project. We've already set up several important subdirectories:
+We've already set up several important subdirectories in _project.root_:
 
  * /__code__ contains functions required for the analysis
  * /__data__ contains the data files to be analyzed.
 
-Let's tell the code where these are.
+Let's tell the code where these are. We can also change our the working directory (_working.dir_ ) to the root directory of the project.
 
 ```{r define file locations, message=FALSE, echo = FALSE}
 # define the working directory
@@ -147,7 +147,7 @@ code.dir = file.path(project.root,
                      "code")
 ```
 
-<!-- ## We now generate a directory (_output.dir_) to capture the outputs from this analysis.-->
+We'll also create a new directory for the results of the analysis.
 
 ```{r make output directory, message=FALSE, echo = FALSE}
 # define the path to the directory that we will use to store all of the data
@@ -159,11 +159,11 @@ output.dir = file.path(project.root,
 dir.create(output.dir,
            showWarnings = FALSE,
            recursive = TRUE)
-
 ```
 
-We'll also create a new directory for the results of the analysis. In this case it can be found at __`r output.dir`__.
+Looking at your file system, you'll see there is now a new directory called  __`r output.dir`__.
 
+## Load packages
 ```{r load packages, message=FALSE, echo = FALSE}
 require(bookdown)
 require(ggplot2)
@@ -330,7 +330,7 @@ This document has been assigned the Digital Object Identifier [10.5281/zenodo.34
 
 [![DOI](DOIBadge3497450.pdf)](https://doi.org/10.5281/zenodo.3497450)
 
-The source code for this document is available through [github.com/AndyClifton/LiterateDemo](https://github.com/AndyClifton/LiterateDemo).
+The source code for this document is available through [github.com/AndyClifton/LiterateDemo](https://github.com/AndyClifton/LiterateSciencePublishingDemo).
 
 # Acknowledgements {-}
 
