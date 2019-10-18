@@ -335,7 +335,7 @@ This document has been assigned the Digital Object Identifier [10.5281/zenodo.34
 
 [![DOI](DOIBadge3497450.pdf)](https://doi.org/10.5281/zenodo.3497450)
 
-The source code for this document is available through [github.com/AndyClifton/LiterateDemo](https://github.com/AndyClifton/LiterateSciencePublishingDemo).
+The source code for this document is available through [github.com/AndyClifton/LiterateSciencePublishingDemo](https://github.com/AndyClifton/LiterateSciencePublishingDemo).
 
 # Acknowledgements {-}
 
