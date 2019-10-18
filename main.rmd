@@ -12,6 +12,11 @@ output:
     citation_package: natbib
   md_document:
     variant: gfm
+  html_document:
+    toc: true
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
 fontsize: 11pt
 geometry: margin=1in
 graphics: yes

@@ -18,8 +18,8 @@ I've split this off into the ["HowTo.md"](HowTo.md) file.
 Documentation is provided in several forms:
 
 * as `main.pdf`,
-* as `main.html`, and
-* as `main.md`, which is [Github-flavoured markup](main.md).
+* as `main.html`, which [can be read in any browser](main.html) and
+* as `main.md`, which is Github-flavoured markup [and is displayed by GitHub](main.md).
 
 All of these files are generated from `main.Rmd`. That's kind of the point of Literate Programming; your code is your documentation, and vice-versa.
 
