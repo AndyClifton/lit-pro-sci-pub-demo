@@ -10,11 +10,8 @@ output:
     fig_caption: true
     keep_tex: true
     citation_package: natbib
-  md_document:
-    variant: gfm
-    toc: true
-    toc_depth: 2
   html_document:
+    keep_md: true
     toc: true
     toc_float:
       collapsed: false
@@ -241,7 +238,6 @@ We now analyse the data from the simple data set. In this case, code has been wr
 ## Plot input data
 The next step is to plot the input data. Let's plot all of the input data together using the _plotSomething()_ function in the _/codes_ directory.
 
-<!-- Configure graphics -->
 ```{r configure graphics, message=FALSE, echo = FALSE}
 # configure graphics appearance
 #theme_set(theme_Literate(base_size = 8,
@@ -250,7 +246,7 @@ The next step is to plot the input data. Let's plot all of the input data togeth
 
 ```{r plot-input-data, echo= FALSE, fig.show='hold', fig.width = 6, fig.height = 3}
 p <- plotSomething(df=df.in,
-                   made.by)
+              made.by)
 plot(p)
 ```
 
