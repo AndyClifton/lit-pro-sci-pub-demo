@@ -32,10 +32,6 @@
 rsconnect/
 .Rproj.user
 
-# Output data
-/main_files
-main.tex
-
 # Project-specific intermediate or output files that are not required
 figure
 /analysis

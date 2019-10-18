@@ -11,7 +11,9 @@ output:
     keep_tex: true
     citation_package: natbib
   md_document:
-    variant: markdown_github
+    variant: gfm
+    toc: true
+    toc_depth: 2
   html_document:
     toc: true
     toc_float:
@@ -166,8 +168,7 @@ We now want to create a new directory for the results of the analysis.
 ```{r make output directory, message=FALSE, echo = FALSE}
 # define the path to the directory that we will use to store all of the data
 output.dir = file.path(project.root,
-                       "analysis",
-                       "all")
+                       "analysis")
 
 # create this directory if it doesn't already exist
 dir.create(output.dir,
@@ -247,7 +248,7 @@ The next step is to plot the input data. Let's plot all of the input data togeth
 #                         base_family = "sans"))
 ```
 
-```{r plot input data, echo= FALSE, fig.show='hold', fig.width = 6, fig.height = 3}
+```{r plot-input-data, echo= FALSE, fig.show='hold', fig.width = 6, fig.height = 3}
 p <- plotSomething(df=df.in,
                    made.by)
 plot(p)
@@ -276,9 +277,9 @@ df.all$x <- df.in$x + 2.0
 ```
 
 ## Plot the results
-Let's run that _plotSomething_ routine again.
+Let's run that _plotSomething()_ routine again.
 
-```{r plot modified data, echo= FALSE, fig.show='hold', fig.width = 6, fig.height = 3}
+```{r plot-modified-data, echo= FALSE, fig.show='hold', fig.width = 6, fig.height = 3}
 p <- plotSomething(df=df.all,
                    made.by)
 plot(p)
