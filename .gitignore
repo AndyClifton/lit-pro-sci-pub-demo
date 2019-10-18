@@ -37,6 +37,6 @@ rsconnect/
 main.tex
 
 # Project-specific intermediate or output files that are not required
-/figure
+figure
 /analysis
-/main_files
+main_files
