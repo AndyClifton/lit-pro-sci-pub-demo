@@ -33,17 +33,23 @@ This script is designed to be used with knitr in R. -->
 
 # Introduction
 
-Something something reproducible research, mumble, grumble, get off my lawn, grumble.
+<!-- Something something reproducible research, mumble, grumble, get off my lawn, grumble. -->
+
+Scientific progress is underpinned by the exchange of information between scientists. This allows others to repeat work and confirm -- or refute -- findings, and adds to the reputability of the research. And, the methods that are developed can be re-used by others. These ideas are sometimes lumped together under the heading of ``reproducible research'', and as a result of applying these tenets, new developments make their way into the body of knowledge.
+
+Reproducible research is beneficial in many non-academic settings, for example by showing that a consultant applied all relevant standards in designing a product, or during an audit when it can be used to show conformance to business processes.
+
+Reproducible research is however often just a goal, rather than a reality. For example, analysis processes are often separated from publication because of the need to switch software. Analysis might be done using python, Fortran, Matlab, or any number of tools, while the writing might be done using LaTeX, a desktop publishing software, or something else. This means that there is a disconnect between the two steps; it is possible that the published document does not actually accurately represent the data. This is not, then, reproducible research.
+
+Recent growth in the capabilities of data repositories such as GitHub and Zenodo means that is feasible to store data and documents together and share them. This assists in sharing data and algorithms and thus replicating research, but the disconnect between data and publication persists. What is therefore needed is a method to clearly link data, algorithms, and publications, and allow that to be shared. This would be beneficial to many people.
 
 ## Linking analysis and publication workflows
-Anecdotally, the separation of the publication from the analysis process has been a barrier to reproducible research, as it is impossible to ensure the link between source data and final publication.
-
 This document demonstrates the application of Literate Programming to reproducible research. Literate programming means that the program documentation is complete and contained within the program itself [@Knuth1984]^[Yes, that's the same `Knuth' who invented LaTeX]. It is important to note that the documentation is effectively a publication, and thus it is possible to combine data analysis with the creation of a publication in the same file. The use of literate programming therefore mitigates this barrier to reproducible research.
 
-Furthermore, this project has been structured so that the data required for this publication are in a subdirectory of the project. This means that all of the files required to reproduce the analysis results can be included in a repository.
+A literate program could be stored together with the input files, processing algorithms, and output documents in a repository. That repository could be shared with others directly who can then use the contents however they need. As an example, the document that you are reading has been archived in a GitHub repository, and can be downloaded and used by anyone to replicate the output documents. Later in this document I will explore some different ways of storing and distributing such information depending on confidentiality requirements.
 
 ## How Literate Programming was used to write this document
-In this example, an output PDF document and results are generated from a file called _main.rmd_. _main.rmd_ is an [R markdown file](https://rmarkdown.rstudio.com/authoring_basics.html). R markdown is a flavor of markdown that can be processed by the R programming language [@R-base] to run code (i.e, do analysis) and create documentation from the same document. This is done using a package called _knitr_. Instructions for how to run _knitr_ are included in the _howto.md_ file in this repository. A far more detailed guide to writing using R markdown can be found in @R-Markdown-Guide.
+In this example, an output PDF document and results are generated from a file called _main.rmd_. _main.rmd_ is an [R markdown file](https://rmarkdown.rstudio.com/authoring_basics.html). R markdown is a flavor of markdown that can be processed by the R programming language [@R-base] to run code (i.e, do analysis) and create documentation from the same document. Instructions for how to run process _main.rmd_ are included in the _HowTo.md_ file in this repository. A far more detailed guide to writing using R markdown can be found in @R-Markdown-Guide.
 
 The markdown document contains a mixture of documentation -- written in markdown or LaTeX - and so-called ``code chunks'', which here are written in R. The output is a PDF.
 
@@ -63,11 +69,11 @@ y = 40 + 2
 print(y)
 ```
 
- * The code chunks can be configured so that their outputs are echoed to the document (or not), which in turn allows the output PDF to show only those parts of the data processing that are relevant. You can thus completely hide the data operations in your output PDF and just display the results that are relevant.
+ * The code chunks are evaluated at the time the document is processed. This is enabled by the _knitr_ package. Code chunks can be configured so that their outputs are echoed to the document (or not). You can thus completely hide data wrangling operations in your output PDF and just display results.
  * It is possible to use other programming languages by replacing the `{r,' in the code chunk with the name of another language (see [``Please not  R''](#pleaseNotR))
  * There are a lot of different possible output formats, including PDF, HTML, Notebooks, other markdown formats, and many others. Corporate formatting can usually be applied without modifying their content. The details of this are out of scope for this paper; instead, see [@R-Markdown-Guide] or  https://bookdown.org/yihui/rmarkdown/documents.html for more information.
 
-I suggest reading this PDF together with the R markdown file (_main.rmd_) and possibly the _knitr_ instructions^[See https://yihui.name/knitr/]. This will greatly help in understanding what is done in the processing and what makes it to the publication.
+There is a learning curve to all of this. I suggest reading this PDF together with the R markdown file (_main.rmd_) and possibly the _knitr_ instructions^[See https://yihui.name/knitr/]. This will greatly help in understanding what is done in the processing and what makes it to the publication.
 
 <!-- ## Execute some code without displaying results. -->
 
@@ -76,9 +82,9 @@ rm(list = ls())
 ```
 
 ## Please not R {#pleaseNotR}
-If you can't handle learning yet another new language, this next statement might interest you:
+If you can't handle learning yet another new language, this statement might interest you:
 
-> "A less well-known fact about R Markdown is that many other languages are also supported, such as Python, Julia, C++, and SQL. The support comes from the knitr package, which has provided a large number of language engines.""
+> "A less well-known fact about R Markdown is that many other languages are also supported, such as Python, Julia, C++, and SQL. The support comes from the _knitr_ package, which has provided a large number of language engines."
 >
 > --- @R-Markdown-Guide
 
@@ -89,10 +95,12 @@ require(knitr)
 names(knitr::knit_engines$get())
 ```
 
-So, you have no excuse. You can write your code in any of those `r NROW(names(knitr::knit_engines$get()))` languages, and off you go. A possible source of confusion might be that the rest of the document is R-flavoured markdown, but honestly there's not really that much R about it.
+So, you have no excuse. You can write your code in any of those `r NROW(names(knitr::knit_engines$get()))` languages, and off you go.
+
+The only challenge that might arise is that the document is _R-flavoured_ markdown. This means that it needs to be rendered from within R, but that step can be dealt with relatively easily, for example leveraging online resources such as the stackoverflow network.
 
 # Implementing a coupled analysis and publication workflow
-An analysis and publication workflow usually follows a similar path:
+Let's assume that you have formed a hypothesis and gathered a bunch of data to test it. You now want to analyse that data and create a report or article that summarizes your findings. An analysis and publication workflow usually follows a similar path:
 
 1. Set up the computing environment
 1. Load some external packages
@@ -102,11 +110,12 @@ An analysis and publication workflow usually follows a similar path:
 1. Do some operations
 1. Plot some more
 1. Write
-1. Format for a journal
+1. Save
 1. Iterate around items 1-10 for a while
+1. Format for publication
 1. Submit
 
-Fortunately, all of this can be captured in a markdown document.
+All of this can be captured in our _main.rmd_ R Markdown file.
 
 ## Setting up the computing environment
 Like most scripts, _main.rmd_ includes a few variables that the user must set to run the analysis.
@@ -114,11 +123,11 @@ Like most scripts, _main.rmd_ includes a few variables that the user must set to
  * The _project.root_ variable defines the location of the files required for this analysis.
  * The _made.by_ variable forms part of a label that will be added to the plots.
 
-An advantage of _knitr_ is that we can simply execute the code and show the code and results inline:
+An advantage of using markdown and _knitr_ is that we can execute the code and show the code and results inline:
 
 ```{r user-defined options, message=TRUE, results = 'hold'}
 # Where can files be found?
-project.root <- file.path('/Users/andyc/Documents/public/GitHub/LiterateSciencePublishingDemo')
+project.root <- file.path('/Users/andyc/Documents/public/GitHub/lit-pro-sci-pub-demo')
 project.root
 
 # Who ran this script
@@ -126,17 +135,17 @@ made.by = "A. Clifton"
 made.by
 ```
 
-We can also show the value of those variables in the documentation using a relatively simple format, e.g. ` r _project.root_ `. This lets us then record in the documentation that
+We can also show the value of those variables in the documentation. For example:
 
  * _project.root_ is `r project.root`
  * _made.by_  is `r made.by`.
 
-We've already set up several important subdirectories in _project.root_:
+Imagine that when we started our project, we set up several subdirectories in _project.root_. These are:
 
  * /__code__ contains functions required for the analysis
  * /__data__ contains the data files to be analyzed.
 
-Let's tell the code where these are. We can also change our the working directory (_working.dir_ ) to the root directory of the project.
+Let's tell the code where to find these directories. And, while we do it, we can also change R's working directory (_working.dir_) to the root directory of the project.
 
 ```{r define file locations, message=FALSE, echo = FALSE}
 # define the working directory
@@ -152,7 +161,7 @@ code.dir = file.path(project.root,
                      "code")
 ```
 
-We'll also create a new directory for the results of the analysis.
+We now want to create a new directory for the results of the analysis.
 
 ```{r make output directory, message=FALSE, echo = FALSE}
 # define the path to the directory that we will use to store all of the data
@@ -169,6 +178,10 @@ dir.create(output.dir,
 Looking at your file system, you'll see there is now a new directory called  __`r output.dir`__.
 
 ## Load packages
+Packages are required to supplement base functions in R and many other languages. For example, this script requires the _reticulate_, _bookdown_, _ggplot2_, _grid_, _knitr_, _RColorBrewer_, _rgdal_, and _stringr_ packages to run. These are called from the script using the _require()_ function. This assumes that the packages are available on your system.^[For details of how to install packages, see the RStudio help.]
+
+** Note: ** The use of packages represents a challenge to reproducable and repeatable research as it is possible that the function and output of the packages may change over time.
+
 ```{r load packages, message=FALSE, echo = FALSE}
 require(bookdown)
 require(ggplot2)
@@ -225,7 +238,7 @@ We now analyse the data from the simple data set. In this case, code has been wr
 ```
 
 ## Plot input data
-The next step is to plot the input data. In this case we plot all of the input data together in one plot, but there are many different possibilities. Figures can also be given a consistent look and feel through ggplot's themes.
+The next step is to plot the input data. Let's plot all of the input data together using the _plotSomething()_ function in the _/codes_ directory.
 
 <!-- Configure graphics -->
 ```{r configure graphics, message=FALSE, echo = FALSE}
@@ -239,6 +252,8 @@ p <- plotSomething(df=df.in,
                    made.by)
 plot(p)
 ```
+
+I've used the _ggplot_ package to make this figure. This has the advantage that figures can be given a consistent look and feel through ggplot's themes.
 
 For convenience, we'll also save a copy of the figure as a _.png_ file to the _analysis_ directory.
 
@@ -271,7 +286,9 @@ plot(p)
 
 And, as we can see, the data have shifted along $x$ by a small amount.
 
-## Connect processing with publication
+## Write
+Writing in an R Markdown document is similar to most other types of markdown.
+
 So far we have demonstrate that we can import and manipulate data and plot results. Another important part of a publication is the ability to generate statistics or summary information from data and include that in our text.
 
 To demonstrate that, I can calculate that the maximum value of $y$ in the input data sets was `r max(df.all$y)`. This can be confirmed by checking the input data files. I could also include more complex logic in these statements, for example to say if one statistic is bigger or larger than another.
@@ -287,7 +304,7 @@ knitr::kable(df.all,
              caption = "The $df.all$ data frame.")
 ```
 
-## Save the processed data
+## Save
 We now write our processed data to file.
 
 ```{r save data, echo=TRUE}
@@ -305,27 +322,83 @@ In R it is also possible to save the whole workspace. We can do that here as wel
 # save the workspace
 save.image(file=file.path(output.dir,"workspace.RData"))
 ```
-
-## Saving packages
 <!--- ? Is it possible to save packages locally the first time they are called and then pick them up there afterwards, instead of from a repo? --->
-Packages are required to supplement base functions in R and many other languages. For example, this script requires the _reticulate_, _bookdown_, _ggplot2_, _grid_, _knitr_, _RColorBrewer_, _rgdal_, and _stringr_ packages to run. These are called from the script using the _require()_ function. This assumes that the packages are available on your system.^[For details of how to install packages, see the RStudio help.] The use of packages represents a challenge to reproducable and repeatable research as it is possible that the function and output of the packages may change over time.
 
-## Applying Journal formating
+## Iterate
+To re-run the analysis, render the _main.rmd_ every so often following the instructions in _HowTo.md_.
+
+Some IDEs also allow the code chunks to be evaluated separately, which might help when dealing with larger data sets, more complex analysis, or bigger documents.
+
+## Apply formatting
 Scientific Journals often have their own formatting requirements. These requirements can still be met using markdown. The mechanics of such a process are beyond the scope of this paper and should probably be done as the last step in the publishing process. The reader is suggested to look at the _rticles_ package and to use the detailed instructions in section 13 of the R Markdown Guide [@R-Markdown-Guide].
 
-## Thoughts on audit trails and confidentiality
-Audit trails and confidentiality have implications for data (which might be commercially sensitive) and algorithms (which represent intellectual property).
+# Does this approach lead to reproducable research?
+If you would like to test the reproducibility of this approach, try this:
 
-A first step would be to avoid saving the workspace during the processing. Similarly, care should be taken to not commit any temporary files to a repository.
+ 1. Make sure you have set up the computing environment.
+ 1. Make a copy of the entire working directory. Put that somewhere safe.
+ 2. In the working directory, remove the results:
+   3. Delete the _output.dir_ directory.
+   4. Delete the _/publications_ directory, where _main.PDF_, _main.html, and _main.md_ are.
 
-This document assumed that the data were available in text files that are stored in the same repository. However, it's equally possible that the raw data would have been called from a remote database at run time (or cached) and should be kept confidential. This can be done by not saving them to file. It would be desirable instead to store data IDs that would allow traceability. This could be combined with saving the results of the data processing, rather than the raw data.
+ You should now be left with some raw data and a few codes. There's no documentation anymore and no results.
 
-Algorithms could be called directly from third party services or accessed via APIs. This shifts the onus to those third parties to provide the tracking required for auditting, but does preserve intellectual property.
+ 5. Render the main.rmd file in R. There are instructions on how to do this in the _HowTo.md_ file included in the root directory.
 
-All of these considerations can be dealt with in the data processing routines that are included in the source code of this document. There are doubtless many other issues and anyone concerned about this is encouraged to consult an expert.
+You now should have your data folder back and all of the documentation, but you'll notice that a few dates might have changed. This is reproducable research in action.
 
-## Packaging for storage
-A simple solution to repeatability and reproducability may be to have a generic ``data processing'' image of a computer system, e.g. as a Docker image, that is started for each new project and used _only_ for that project. This clean system is then used for one data processing task which is managed through a file such as the one you are reading. When the project is complete, the image is simply stored for as long as required. This would also avoid problems associated with changes introduced by package and system updates. A drawback to this approach would be the need to migrate the data every 5 years or so to a new system, which would be required to avoid data being stranded on old software.
+## Protecting confidential data and intellectual property
+In an ideal world, I would simply throw all of my data and code into a directory, push it to Github or some other repository, and share the URL with everyone. This is effectively what you are reading.
+
+Unfortunately, things don't work that way. My data might be commercially sensitive, and my algorithms represent intellectual property. As a result, both data and codes might need to be protected. But the story is not so clear cut. It may be helpful at this point to consider a few real-world users and their needs, and how they might modify the above processes to protect their data and intellectual property.
+
+There are doubtless many other issues and anyone concerned about this is encouraged to consult an expert.
+
+### The academic researcher
+... is driven by the need for recognition and cooperation, and wants to share all of their processes and results.
+
+There are two subsets here that we should remember:
+
+ - the academic researcher who is required to share their data as a condition of their funding.
+ - the academic researcher that cannot share their raw data as it was provided by an industry partner.
+
+> "need to finish this"
+
+### The consultant
+... wants to provide scientifically rigorous results to clients without sharing all of the algorithms that go into those results. However, they might be subject to audits that require them to connect end results to processing routines and data, and recreate those steps if required. This is particularly relevant if processes are occasionally recalibrated.
+
+> "need to finish this"
+
+
+### The internal researcher
+... wants to generate a record of research for internal purposes
+
+This document gave a simple example where data was obtained from text files that are stored in the same repository. However, it's equally possible that the raw data would have been called from a remote database at run time (or cached) and should be kept confidential.
+
+This can be done by not saving them to file. It would be desirable instead to store data IDs that would allow traceability. This could be combined with saving the results of the data processing, rather than the raw data.
+
+> "need to finish this"
+
+
+## Is this FAIR?
+``FAIR'' data stands for data that are Findable, Accessible, Interoperable, and Reusable.
+
+> "need to finish this"
+
+### Interoperable data
+Our data were stored as .csv files. These are not ideal; besides the meaningless column headers, there's no metadata. Instead, it would be ideal if the data had been in some kind of self-describing format. It would have been even better if I knew which industry I was targeting and had been able to use a standardized format. This is left to the reader as an exercise!
+
+
+## Making the results portable
+One way to ensure repeatability and reproducability may be to have a generic ``data processing'' image of a computer system, e.g. as a Docker image, that is started for each new project and used _only_ for that project. This clean system is then used for one data processing task which is managed through a file such as the one you are reading. When the project is complete, the image is simply stored for as long as required. This would also avoid problems associated with changes introduced by package and system updates. A drawback to this approach would be the need to migrate the data every 5 years or so to a new system, which would be required to avoid data being stranded on old software.
+
+
+> "need to finish this"
+
+
+<!--- Algorithms could be called directly from third party services or accessed via APIs. This shifts the onus to those third parties to provide the tracking required for auditting, but does preserve intellectual property. --->
+
+
 
 # Conclusions
 Literate programming allows the creation of a single document that captures all of the process of preparing and analysing data, and creating a publication to describe that data. This is a fundamental requirement of reproducible research.
@@ -335,7 +408,7 @@ This document has been assigned the Digital Object Identifier [10.5281/zenodo.34
 
 [![DOI](DOIBadge3497450.pdf)](https://doi.org/10.5281/zenodo.3497450)
 
-The source code for this document is available through [github.com/AndyClifton/LiterateSciencePublishingDemo](https://github.com/AndyClifton/LiterateSciencePublishingDemo).
+The source code for this document is available through [github.com/AndyClifton/lit-pro-sci-pub-demo](https://github.com/AndyClifton/lit-pro-sci-pub-demo).
 
 # Acknowledgements {-}
 
