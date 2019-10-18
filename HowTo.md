@@ -32,4 +32,6 @@ We use _rmarkdown::render()_ to generate the outputs <sup id="a1">[1](#f1)</sup>
 >
 > -- Ralf Stubner
 
+These commands are all captured in the [`make.r`](make.r) file
+
 <sup><b id="f1">1</b></sup> Many thanks to Ralf Stubner for providing this information in an answer through [stackoverflow.com](https://stackoverflow.com/questions/51676427/r-markdown-ref-not-working/51677282?noredirect=1#comment103233545_51677282). [↩](#a1)
