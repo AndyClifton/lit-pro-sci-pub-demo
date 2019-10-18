@@ -10,8 +10,7 @@ output:
     fig_caption: true
     keep_tex: true
     citation_package: natbib
-  md_document:
-    variant: gfm
+  rmarkdown::github_document:
   html_document:
     toc: true
     toc_float:

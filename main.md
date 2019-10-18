@@ -285,7 +285,7 @@ directory.
 
 <!-- Configure graphics -->
 
-![](/Users/andyc/Documents/public/Github/lit-pro-sci-pub-demo/publications/main_files/figure-gfm/plot%20input%20data-1.png)<!-- -->
+![](main_files/figure-gfm/plot%20input%20data-1.png)<!-- -->
 
 I’ve used the *ggplot* package to make this figure. This has the
 advantage that figures can be given a consistent look and feel through
@@ -306,10 +306,9 @@ df.all$x <- df.in$x + 2.0
 
 ## Plot the results
 
-Let’s run that *plotSomething* routine
-again.
+Let’s run that *plotSomething* routine again.
 
-![](/Users/andyc/Documents/public/Github/lit-pro-sci-pub-demo/publications/main_files/figure-gfm/plot%20modified%20data-1.png)<!-- -->
+![](main_files/figure-gfm/plot%20modified%20data-1.png)<!-- -->
 
 And, as we can see, the data have shifted along \(x\) by a small amount.
 
@@ -527,7 +526,7 @@ This document has been assigned the Digital Object Identifier
 [10.5281/zenodo.3497450](http://dx.doi.org/10.5281/zenodo.3497450).
 Citations in a range of formats can be obtained through Zenodo.
 
-[![DOI](../DOIBadge3497450.pdf)](https://doi.org/10.5281/zenodo.3497450)
+[![DOI](DOIBadge3497450.pdf)](https://doi.org/10.5281/zenodo.3497450)
 
 The source code for this document is available through
 [github.com/AndyClifton/lit-pro-sci-pub-demo](https://github.com/AndyClifton/lit-pro-sci-pub-demo).
