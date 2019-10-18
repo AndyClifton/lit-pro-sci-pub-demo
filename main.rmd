@@ -11,11 +11,14 @@ output:
     keep_tex: true
     citation_package: natbib
   html_document:
-    keep_md: true
     toc: true
     toc_float:
       collapsed: false
       smooth_scroll: false
+  md_document:
+    variant: gfm
+    toc: true
+    toc_depth: 2      
 fontsize: 11pt
 geometry: margin=1in
 graphics: yes
@@ -119,15 +122,15 @@ All of this can be captured in our _main.rmd_ R Markdown file.
 ## Setting up the computing environment
 Like most scripts, _main.rmd_ includes a few variables that the user must set to run the analysis.
 
- * The _project.root_ variable defines the location of the files required for this analysis.
+ * The __ variable defines the location of the files required for this analysis.
  * The _made.by_ variable forms part of a label that will be added to the plots.
 
 An advantage of using markdown and _knitr_ is that we can execute the code and show the code and results inline:
 
 ```{r user-defined options, message=TRUE, results = 'hold'}
 # Where can files be found?
-project.root <- file.path('/Users/andyc/Documents/public/GitHub/lit-pro-sci-pub-demo')
-project.root
+base.dir <- file.path('/Users/andyc/Documents/public/GitHub/lit-pro-sci-pub-demo')
+base.dir
 
 # Who ran this script
 made.by = "A. Clifton"
@@ -136,10 +139,10 @@ made.by
 
 We can also show the value of those variables in the documentation. For example:
 
- * _project.root_ is `r project.root`
+ * _base.dir_ is `r base.dir`
  * _made.by_  is `r made.by`.
 
-Imagine that when we started our project, we set up several subdirectories in _project.root_. These are:
+Imagine that when we started our project, we set up several subdirectories in _base.dir_. These are:
 
  * /__code__ contains functions required for the analysis
  * /__data__ contains the data files to be analyzed.
@@ -148,27 +151,25 @@ Let's tell the code where to find these directories. And, while we do it, we can
 
 ```{r define file locations, message=FALSE, echo = FALSE}
 # define the working directory
-working.dir <- project.root
+working.dir <- base.dir
 setwd(working.dir)
 
 #identify data directory
-data.dir = file.path(project.root,
-                     "data")
+data.dir = "data"
 
 #identify code directory
-code.dir = file.path(project.root,
-                     "code")
+code.dir = "code"
 ```
 
 We now want to create a new directory for the results of the analysis.
 
 ```{r make output directory, message=FALSE, echo = FALSE}
 # define the path to the directory that we will use to store all of the data
-output.dir = file.path(project.root,
-                       "analysis")
+output.dir = "analysis"
 
 # create this directory if it doesn't already exist
-dir.create(output.dir,
+dir.create(file.path(base.dir,
+                       output.dir),
            showWarnings = FALSE,
            recursive = TRUE)
 ```
@@ -198,9 +199,9 @@ Every data processing workflow requires its own scripts or functions to run. In 
 
 ```{r source codes, message=TRUE, echo = TRUE}
 # source these functions
-code.files = dir(code.dir, pattern = "\\.R$")
+code.files = dir(file.path(base.dir,code.dir), pattern = "\\.R$")
 for (file in code.files){
-  source(file = file.path(code.dir,file))
+  source(file = file.path(base.dir,code.dir,file))
   print(paste0("Sourcing ", file, "."))
 }
 ```
@@ -210,20 +211,19 @@ We now analyse the data from the simple data set. In this case, code has been wr
 
 ```{r load individual data files, results='asis', echo = FALSE}
   # identify the data sets that we have available
-  data.files = dir(data.dir,
+  data.files = dir(file.path(base.dir, data.dir),
                    recursive = TRUE,
                    pattern = "\\.csv$")
 
   # load each file
   for (data.file in data.files){
     # Read this data set;
-    df.new <- read.csv(file.path(data.dir,
-                       data.file),
+    df.new <- read.csv(file.path(base.dir, data.dir, data.file),
                       col.names = c("x","y","z"),
              header=TRUE)
     # capture information about this data
     df.new$source = data.file
-    # check for the existance of an aggregate data set. If it's not there, create a new one
+    # check for the existence of an aggregate data set. If it's not there, create a new one
     if (!exists("df.in")){
       # theres no data
       df.in <- df.new
@@ -244,9 +244,8 @@ The next step is to plot the input data. Let's plot all of the input data togeth
 #                         base_family = "sans"))
 ```
 
-```{r plot-input-data, echo= FALSE, fig.show='hold', fig.width = 6, fig.height = 3}
-p <- plotSomething(df=df.in,
-              made.by)
+```{r plot-input-data, echo= FALSE, fig.show='hold', fig.width = 6, fig.height = 3, fig.cap="Input Data"}
+p <- plotSomething(df=df.in, made.by)
 plot(p)
 ```
 
@@ -255,8 +254,7 @@ I've used the _ggplot_ package to make this figure. This has the advantage that 
 For convenience, we'll also save a copy of the figure as a _.png_ file to the _analysis_ directory.
 
 ```{r save plot of input data, message = FALSE, echo=FALSE}
-ggsave(filename = file.path(output.dir,
-                                  "DataAll.png"),
+ggsave(filename = file.path(base.dir,output.dir, "DataAll.png"),
              plot = last_plot(),
              width = 6,
              height = 4,
@@ -275,9 +273,8 @@ df.all$x <- df.in$x + 2.0
 ## Plot the results
 Let's run that _plotSomething()_ routine again.
 
-```{r plot-modified-data, echo= FALSE, fig.show='hold', fig.width = 6, fig.height = 3}
-p <- plotSomething(df=df.all,
-                   made.by)
+```{r plot-modified-data, echo= FALSE, fig.show='hold', fig.width = 6, fig.height = 3, fig.cap="Modified Data"}
+p <- plotSomething(df=df.all, made.by)
 plot(p)
 ```
 
@@ -306,10 +303,10 @@ We now write our processed data to file.
 
 ```{r save data, echo=TRUE}
 # save the data
-save(list = c("project.root",
+save(list = c("base.dir",
               "made.by",
               "df.all"),
-       file = file.path(output.dir,"Data.RData"),
+       file = file.path(base.dir, output.dir, "Data.RData"),
        envir = .GlobalEnv)
 ```
 
@@ -317,7 +314,7 @@ In R it is also possible to save the whole workspace. We can do that here as wel
 
 ```{r save workspace, echo=TRUE}
 # save the workspace
-save.image(file=file.path(output.dir,"workspace.RData"))
+save.image(file=file.path(base.dir, output.dir,"workspace.RData"))
 ```
 <!--- ? Is it possible to save packages locally the first time they are called and then pick them up there afterwards, instead of from a repo? --->
 
@@ -332,15 +329,15 @@ Scientific Journals often have their own formatting requirements. These requirem
 # Does this approach lead to reproducable research?
 If you would like to test the reproducibility of this approach, try this:
 
- 1. Make sure you have set up the computing environment.
- 1. Make a copy of the entire working directory. Put that somewhere safe.
- 2. In the working directory, remove the results:
-   3. Delete the _output.dir_ directory.
-   4. Delete the _/publications_ directory, where _main.PDF_, _main.html, and _main.md_ are.
+1. Make sure you have set up the computing environment.
+1. Make a copy of the entire working directory. Put that somewhere safe.
+1. In the working directory, remove the results:
+    1. Delete the _`r output.dir`_ directory.
+    1. Delete the _/publications_ directory and all of its subdirectories. This is where _main.PDF_, _main.html_, and _main.md_ are.
 
  You should now be left with some raw data and a few codes. There's no documentation anymore and no results.
 
- 5. Render the main.rmd file in R. There are instructions on how to do this in the _HowTo.md_ file included in the root directory.
+5. Render the _main.rmd_ file in R. There are instructions on how to do this in the _HowTo.md_ file included in the root directory.
 
 You now should have your data folder back and all of the documentation, but you'll notice that a few dates might have changed. This is reproducable research in action.
 
