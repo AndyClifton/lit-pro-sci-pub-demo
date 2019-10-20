@@ -17,19 +17,19 @@ Conceivably, Literate Programming could be combined with a Docker image of all o
 - Patience and a sense of humour.
 
 # How To Use This Code
-I've split this off into the [`HowTo.md`](HowTo.md) file.
+I've split this off into the [_HOWTO.md_](HOWTO.md) file.
 
 # Documentation
 Documentation is provided in the [publications directory](publications) in several forms:
 
-* as `main.pdf`, which is [a normal PDF](publications/main.pdf),
-* as `main.html`, which [can be read in any browser](publications/main.html), and
-* as `main.md`, which is Github-flavoured markup [and is displayed by GitHub](publications/main.md).
+* as _main.pdf_, which is [a normal PDF](publications/main.pdf),
+* as _main.html_, which [can be read in any browser](publications/main.html), and
+* as _main.md_, which is Github-flavoured markup [and is displayed by GitHub](publications/main.md).
 
-All of these files are generated from `main.Rmd`. That's kind of the point of Literate Programming; your code is your documentation, and vice-versa.
+All of these files are generated from _main.Rmd_. That's kind of the point of Literate Programming; your code is your documentation, and vice-versa.
 
 # Releases
-You can find the most recent _stable_ version of this code in the [releases](../../releases) part of this repository.
+You can find the most recent stable version of this code in the [releases](../../releases) part of this repository.
 
 # Reporting Bugs and Requesting Improvements
 This software is provided as is, with no guarantees.
@@ -46,3 +46,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 # Acknowledgements
 * Many thanks to Nikola Vasiljevic at DTU for encouraging me to get this written up.
+
+**END OF FILE**
