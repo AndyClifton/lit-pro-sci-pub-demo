@@ -218,6 +218,16 @@ Let’s tell the code where to find these directories. And, while we do
 it, we can also change R’s working directory (`working.dir`) to the root
 directory of the project.
 
+``` r
+# define the working directory
+working.dir <- base.dir
+setwd(working.dir)
+#identify data directory
+data.dir = "data"
+#identify code directory
+code.dir = "code"
+```
+
 We now want to create a new directory for the results of the analysis.
 
 Looking at your file system, you’ll see there is now a new directory

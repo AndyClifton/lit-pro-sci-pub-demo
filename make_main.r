@@ -5,12 +5,15 @@ require(knitr)
 
 # Let's generate all of the possible outputs from main
 
-# Delete all old versions
+# Housekeeping
+## Delete all old versions
 unlink("publications",recursive=TRUE, force=TRUE)
 
-# PDF
 ## Remove current markdown file
 file.remove("main.md")
+
+
+# PDF
 ## generate the file
 rmarkdown::render("main.rmd",
   output_format=c('pdf_document2'),
@@ -35,8 +38,6 @@ file.copy("main.html", html.dir)
 file.remove("main.html")
 
 # GitHub markdown
-## Remove current markdown file
-file.remove("main.md")
 ## generate the file
 rmarkdown::render("main.rmd",
     output_format=c('md_document'))
@@ -51,8 +52,6 @@ file.copy("main_files", gfm.dir, recursive=TRUE)
 unlink("main_files",recursive=TRUE, force=TRUE)
 
 # WORD
-## Remove current markdown file
-file.remove("main.md")
 ## generate the file
 rmarkdown::render("main.rmd",
   output_format=c('word_document'),

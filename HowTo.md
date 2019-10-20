@@ -17,8 +17,8 @@ Create a directory somewhere for your project (let's call this `$ROOT`). Clone t
 
 In `$ROOT` you should now have:
 
-- A 'code' directory with some .R files.
-- A 'data' directory with a couple of short .csv data files.
+- A _code/_ directory with some .R files.
+- A _data/_ directory with a couple of short .csv data files.
 
 ## Update _main.rmd_
 1. Open _main.rmd_ in an editor.
@@ -55,4 +55,4 @@ Once we have rendered the file, we could commit it back to our git. There are [l
 
 - On **mac or Linux/unix systems** run `git commit -m "My head line" -m "My content line."`. I have included this in the comments in the shell script _make_main.sh_, but not implemented it - it seemed a bit cheeky to write stuff to your git...
 
- **END**
+**END OF FILE**
