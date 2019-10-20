@@ -8,12 +8,11 @@ This script is designed to be used with knitr in R. -->
 <!-- Something something reproducible research, mumble, grumble, get off my lawn, grumble. -->
 
 Scientific progress is underpinned by the exchange of information
-between scientists. This allows others to repeat work and confirm – or
-refute – findings, and adds to the reputability of the research. And,
-the methods that are developed can be re-used by others. These ideas are
-sometimes lumped together under the heading of \`\`reproducible
-research’’, and as a result of applying these tenets, new developments
-make their way into the body of knowledge.
+between scientists. This allows others to reuse methods, repeat work and
+confirm – or refute – findings, and adds to the reputability of the
+research. These ideals are sometimes lumped together under the heading
+of \`\`reproducible research’’. As a result of applying these methods,
+new developments can make their way into the body of knowledge.
 
 Reproducible research is beneficial in many non-academic settings, for
 example by showing that a consultant applied all relevant standards in
@@ -25,9 +24,10 @@ reality. For example, analysis processes are often separated from
 publication because of the need to switch software. Analysis might be
 done using python, Fortran, Matlab, or any number of tools, while the
 writing might be done using LaTeX, a desktop publishing software, or
-something else. This means that there is a disconnect between the two
-steps; it is possible that the published document does not actually
-accurately represent the data. This is not, then, reproducible research.
+something else. The use of multiple software types means that there is a
+disconnect between the two steps; it is possible that the published
+document does not actually accurately represent the data. This is not,
+then, reproducible research.
 
 Recent growth in the capabilities of data repositories such as GitHub
 and Zenodo means that is feasible to store data and documents together
@@ -61,23 +61,15 @@ such information depending on confidentiality requirements.
 
 In this example, an output PDF document and results are generated from a
 file called *main.rmd*. *main.rmd* is an [R markdown
-file](https://rmarkdown.rstudio.com/authoring_basics.html). R markdown
-is a flavor of markdown that can be processed by the R programming
-language (R Core Team 2017) to run code (i.e, do analysis) and create
-documentation from the same document. Instructions for how to run
-process *main.rmd* are included in the *HowTo.md* file in this
-repository. A far more detailed guide to writing using R markdown can be
-found in Xie, Allaire, and Grolemund (2019).
+file](https://rmarkdown.rstudio.com/authoring_basics.html).
 
-The markdown document contains a mixture of documentation – written in
-markdown or LaTeX - and so-called \`\`code chunks’’, which here are
-written in R. The output is a PDF.
+R markdown is a flavor of markdown – basically pandoc – that can be
+processed by the R programming language (R Core Team 2017) to run code
+(i.e, do analysis) and create documentation from the same document. It
+looks like normal text and the markdown document contains a mixture of
+documentation and \`\`code chunks’’.
 
-  - The .rmd document is written in Pandoc markdown, which looks like
-    normal text.
-  - The document contains code chunks that look like this:
-
-<!-- end list -->
+The code chunks look like this:
 
     ```{r, echo=TRUE}
     y = 40 + 2
@@ -93,26 +85,29 @@ print(y)
 
     ## [1] 42
 
-  - The code chunks are evaluated at the time the document is processed.
-    This is enabled by the *knitr* package. Code chunks can be
-    configured so that their outputs are echoed to the document (or
-    not). You can thus completely hide data wrangling operations in your
-    output PDF and just display results.
-  - It is possible to use other programming languages by replacing the
-    \`{r,’ in the code chunk with the name of another language (see
-    [\`\`Please not R’’](#pleaseNotR))
-  - There are a lot of different possible output formats, including PDF,
-    HTML, Notebooks, other markdown formats, and many others. Corporate
-    formatting can usually be applied without modifying their content.
-    The details of this are out of scope for this paper; instead, see
-    (Xie, Allaire, and Grolemund 2019) or
-    <https://bookdown.org/yihui/rmarkdown/documents.html> for more
-    information.
+The code chunks above are written in R. They are evaluated at the time
+the document is processed. This is enabled by the *knitr* package. Code
+chunks can be configured so that their outputs are echoed to the
+document (or not). You can thus completely hide data wrangling
+operations in your output PDF and just display results.
+
+There are a lot of different possible output formats, including PDF,
+HTML, Notebooks, other markdown formats, and many others. Corporate
+formatting can usually be applied without modifying their content. The
+details of this are out of scope for this paper; instead, see Xie,
+Allaire, and Grolemund (2019) or
+<https://bookdown.org/yihui/rmarkdown/documents.html> for more
+information.
+
+Instructions for how to run process (render) *main.rmd* are included in
+the *HOWTO.md* file in this repository. A far more detailed guide to
+writing using R markdown can be found in Xie, Allaire, and Grolemund
+(2019).
 
 There is a learning curve to all of this. I suggest reading this PDF
 together with the R markdown file (*main.rmd*) and possibly the *knitr*
-instructions\[2\]. This will greatly help in understanding what is done
-in the processing and what makes it to the publication.
+package’s instructions\[2\]. This will greatly help in understanding
+what is done in the processing and what makes it to the publication.
 
 <!-- ## Execute some code without displaying results. -->
 
@@ -128,7 +123,9 @@ might interest you:
 > 
 > — Xie, Allaire, and Grolemund (2019)
 
-The currently available language engines are:
+You can use the other programming languages by replacing the \`\` {r, ’’
+in the code chunk with the name of another language. The currently
+available language engines are:
 
 ``` r
 require(knitr)
@@ -171,28 +168,30 @@ workflow usually follows a similar path:
 7.  Plot some more
 8.  Write
 9.  Save
-10. Iterate around items 1-10 for a while
+10. Iterate around items 1-9 for a while
 11. Format for publication
 12. Submit
 
-All of this can be captured in our *main.rmd* R Markdown file.
+All of this can be captured in our *main.rmd* R Markdown file, with the
+exception of the final \`\`submit’’ stage.
 
 ## Setting up the computing environment
 
 Like most scripts, *main.rmd* includes a few variables that the user
 must set to run the analysis.
 
-  - The \_\_ variable defines the location of the files required for
-    this analysis.
-  - The *made.by* variable forms part of a label that will be added to
+  - The `base.dir` variable defines the location of the files required
+    for this analysis.
+  - The `made.by` variable forms part of a label that will be added to
     the plots.
 
-An advantage of using markdown and *knitr* is that we can execute the
-code and show the code and results inline:
+An advantage of using markdown and the *knitr* package is that we can
+execute the code and show the code and results inline:
 
 ``` r
 # Where can files be found?
-base.dir <- file.path('/Users/andyc/Documents/public/GitHub/lit-pro-sci-pub-demo')
+#base.dir <- file.path('/Users/andyc/Documents/public/GitHub/lit-pro-sci-pub-demo')
+base.dir <-file.path('.')
 base.dir
 
 # Who ran this script
@@ -200,30 +199,29 @@ made.by = "A. Clifton"
 made.by
 ```
 
-    ## [1] "/Users/andyc/Documents/public/GitHub/lit-pro-sci-pub-demo"
+    ## [1] "."
     ## [1] "A. Clifton"
 
 We can also show the value of those variables in the documentation. For
 example:
 
-  - *base.dir* is
-    /Users/andyc/Documents/public/GitHub/lit-pro-sci-pub-demo
-  - *made.by* is A. Clifton.
+  - `base.dir` is .
+  - `made.by` is A. Clifton.
 
 Imagine that when we started our project, we set up several
-subdirectories in *base.dir*. These are:
+subdirectories in `base.dir`. These are:
 
-  - /**code** contains functions required for the analysis
-  - /**data** contains the data files to be analyzed.
+  - *code/* contains functions required for the analysis
+  - *data/* contains the data files to be analyzed.
 
 Let’s tell the code where to find these directories. And, while we do
-it, we can also change R’s working directory (*working.dir*) to the root
+it, we can also change R’s working directory (`working.dir`) to the root
 directory of the project.
 
 We now want to create a new directory for the results of the analysis.
 
 Looking at your file system, you’ll see there is now a new directory
-called **analysis**.
+called *analysis*.
 
 ## Load packages
 
@@ -231,7 +229,7 @@ Packages are required to supplement base functions in R and many other
 languages. For example, this script requires the *reticulate*,
 *bookdown*, *ggplot2*, *grid*, *knitr*, *RColorBrewer*, *rgdal*, and
 *stringr* packages to run. These are called from the script using the
-*require()* function. This assumes that the packages are available on
+`require()` function. This assumes that the packages are available on
 your system.\[3\]
 
 \*\* Note: \*\* The use of packages represents a challenge to
@@ -241,9 +239,9 @@ and output of the packages may change over time.
 ## Loading our own routines
 
 Every data processing workflow requires its own scripts or functions to
-run. In this example, they are included in the *codes* directory and
-sourced during the preparation of this document. I have included output
-below to show these codes being called.
+run. In this example, they are included in the `code.dir` (*code*)
+directory and sourced during the preparation of this document. I have
+included output below to show these codes being called.
 
 ``` r
 # source these functions
@@ -262,24 +260,24 @@ for (file in code.files){
 ## Load the data
 
 We now analyse the data from the simple data set. In this case, code has
-been written to load all of the files in the *data.dir* directory
+been written to load all of the files in the `data.dir` directory
 (data). I’m also going to map the three columns in the data files to the
 variables \(x\), \(y\), and \(z\).\[4\]
 
 ## Plot input data
 
 The next step is to plot the input data. Let’s plot all of the input
-data together using the *plotSomething()* function in the */codes*
+data together using the `plotSomething()` function in the `code.dir`
 directory.
 
 ![Input Data](main_files/figure-gfm/plot-input-data-1.png)
 
-I’ve used the *ggplot* package to make this figure. This has the
+I’ve used the `ggplot2` package to make this figure. This has the
 advantage that figures can be given a consistent look and feel through
 ggplot’s themes.
 
 For convenience, we’ll also save a copy of the figure as a *.png* file
-to the *analysis* directory.
+to the `output.dir` (*analysis/*) directory.
 
 ## Operate on the data
 
@@ -293,11 +291,12 @@ df.all$x <- df.in$x + 2.0
 
 ## Plot the results
 
-Let’s run that *plotSomething()* routine again.
+Let’s run that `plotSomething()` routine again.
 
 ![Modified Data](main_files/figure-gfm/plot-modified-data-1.png)
 
-And, as we can see, the data have shifted along \(x\) by a small amount.
+And, as we can see in Figure @ref(fig:plot-modified-data), the data have
+shifted along \(x\) by a small amount.
 
 ## Write
 
@@ -315,17 +314,12 @@ data files. I could also include more complex logic in these statements,
 for example to say if one statistic is bigger or larger than another.
 
 We sometimes need to include formatted tables in documents. This can be
-done using the *kable* function (Table
-@ref(tab:dfall)).
-
-<!--- https://bookdown.org/yihui/rmarkdown/bookdown-markdown.html#bookdown-markdown --->
+done using the `kable()` function (Table @ref(tab:dfall)).
 
 ``` r
 knitr::kable(df.all,
-             format = "pandoc",
-             # format = "markdown", # this breaks cross references
-             booktabs=TRUE,
-             caption = "The $df.all$ data frame.")
+  format="pandoc",
+  caption = "The _df.all_ data frame.")
 ```
 
 |  x |   y |  z | source    |
@@ -343,7 +337,10 @@ knitr::kable(df.all,
 |  7 |  15 | 20 | file2.csv |
 | 12 |  30 | 40 | file2.csv |
 
-The \(df.all\) data frame.
+The *df.all* data frame.
+
+If our goal was just to produce HTML, we could add styling, too. This is
+detailed in the *kable* package vignettes.\[5\]
 
 ## Save
 
@@ -370,8 +367,8 @@ save.image(file=file.path(base.dir, output.dir,"workspace.RData"))
 
 ## Iterate
 
-To re-run the analysis, render the *main.rmd* every so often following
-the instructions in *HowTo.md*.
+To re-run the analysis, render *main.rmd* every so often following the
+instructions in *HOWTO.md*.
 
 Some IDEs also allow the code chunks to be evaluated separately, which
 might help when dealing with larger data sets, more complex analysis, or
@@ -382,9 +379,10 @@ bigger documents.
 Scientific Journals often have their own formatting requirements. These
 requirements can still be met using markdown. The mechanics of such a
 process are beyond the scope of this paper and should probably be done
-as the last step in the publishing process. The reader is suggested to
-look at the *rticles* package and to use the detailed instructions in
-section 13 of the R Markdown Guide (Xie, Allaire, and Grolemund 2019).
+as the last step in the publishing process. The reader is encouraged to
+look at the [*rticles*](https://github.com/rstudio/rticles) package and
+to use the detailed instructions in section 13 of the R Markdown Guide
+(Xie, Allaire, and Grolemund 2019).
 
 # Does this approach lead to reproducable research?
 
@@ -396,19 +394,19 @@ this:
     safe.
 3.  In the working directory, remove the results:
     1.  Delete the *analysis* directory.
-    2.  Delete the */publications* directory and all of its
+    2.  Delete the *publications/* directory and all of its
         subdirectories. This is where *main.PDF*, *main.html*, and
         *main.md* are.
 
 You should now be left with some raw data and a few codes. There’s no
 documentation anymore and no results.
 
-5.  Render the *main.rmd* file in R. There are instructions on how to do
-    this in the *HowTo.md* file included in the root directory.
+5.  Render *main.rmd*. There are instructions on how to do this in the
+    *HOWTO.md* file included in the root directory of the repository.
 
 You now should have your data folder back and all of the documentation,
-but you’ll notice that a few dates might have changed. This is
-reproducable research in action.
+but you’ll notice that the dates on the figures might have changed. This
+is reproducable research in action.
 
 ## Protecting confidential data and intellectual property
 
@@ -475,12 +473,12 @@ Interoperable, and Reusable.
 
 ### Interoperable data
 
-Our data were stored as .csv files. These are not ideal; besides the
-meaningless column headers, there’s no metadata. Instead, it would be
-ideal if the data had been in some kind of self-describing format. It
-would have been even better if I knew which industry I was targeting and
-had been able to use a standardized format. This is left to the reader
-as an exercise\!
+Our data were stored as comma-separated values in .csv files. These are
+not ideal; besides the meaningless column headers, there’s no metadata.
+Instead, it would be ideal if the data had been in some kind of
+self-describing format. It would have been even better if I knew which
+industry I was targeting and had been able to use a standardized format.
+This is left to the reader as an exercise\!
 
 ## Making the results portable
 
@@ -561,3 +559,6 @@ Definitive Guide*. <https://bookdown.org/yihui/rmarkdown/>.
 4.  See
     <https://www.calvin.edu/~rpruim/courses/s341/S17/from-class/MathinRmd.html>
     for more information about including maths in R markdown
+
+5.  In this example I have explicitly stated `_format="pandoc"_` so that
+    this file will work in HTML and PDF.
