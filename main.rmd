@@ -115,11 +115,11 @@ Let's assume that you have formed a hypothesis and gathered a bunch of data to t
 1. Plot some more
 1. Write
 1. Save
-1. Iterate around items 1-10 for a while
+1. Iterate around items 1-9 for a while
 1. Format for publication
 1. Submit
 
-All of this can be captured in our _main.rmd_ R Markdown file.
+All of this can be captured in our _main.rmd_ R Markdown file, with the exception of the final `submit` stage.
 
 ## Setting up the computing environment
 Like most scripts, _main.rmd_ includes a few variables that the user must set to run the analysis.
