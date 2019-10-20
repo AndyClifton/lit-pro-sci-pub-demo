@@ -17,7 +17,7 @@ output:
       collapsed: false
       smooth_scroll: false
   md_document:
-    variant: gfm
+    variant: markdown_github
     toc: true
     toc_depth: 2
   word_document:
