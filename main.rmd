@@ -18,7 +18,9 @@ output:
   md_document:
     variant: gfm
     toc: true
-    toc_depth: 2      
+    toc_depth: 2
+  word_document:
+    reference_docx: default
 fontsize: 11pt
 geometry: margin=1in
 graphics: yes

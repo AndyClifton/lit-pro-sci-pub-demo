@@ -43,4 +43,16 @@ file.remove("main.md")
 file.copy("main_files", gfm.dir, recursive=TRUE)
 unlink("main_files",recursive=TRUE, force=TRUE)
 
+# WORD
+## generate the file
+rmarkdown::render("main.rmd",
+  output_format=c('word_document'),
+  knit_root_dir=getwd())
+
+## move the publication
+word.dir <- file.path(getwd(),"publications","word_document")
+dir.create(word.dir,recursive=TRUE)
+file.copy("main.docx", word.dir)
+file.remove("main.docx")
+
 # END OF FILE
