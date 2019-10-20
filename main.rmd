@@ -18,9 +18,10 @@ output:
       smooth_scroll: false
   md_document:
     variant: markdown_github
-    toc: true
-    toc_depth: 2
-  word_document:
+    number_sections: true
+    pandoc args: ["--filter=pandoc-secnos"]
+  bookdown::word_document2:
+    number_sections: true
     reference_docx: default
 fontsize: 11pt
 geometry: margin=1in
@@ -36,7 +37,7 @@ This is R Markdown. Markdown is a simple formatting syntax for authoring HTML, P
 
 This script is designed to be used with knitr in R. -->
 
-# Introduction
+# Introduction{#sec:intro}
 
 <!-- Something something reproducible research, mumble, grumble, get off my lawn, grumble. -->
 
@@ -73,7 +74,9 @@ y = 40 + 2
 print(y)
 ```
 
-The code chunks above are written in R. They are evaluated at the time the document is processed. This is enabled by the _knitr_ package. Code chunks can be configured so that their outputs are echoed to the document (or not). You can thus completely hide data wrangling operations in your output PDF and just display results.
+The code chunks above are written in R. They are evaluated at the time the document is processed. This is enabled by the _knitr_ package, which also includes support for other languages (See section \@ref(sec:pleaseNotR)). Code chunks can be configured so that their outputs are echoed to the document (or not). You can thus completely hide data wrangling operations in your output PDF and just display results.
+
+Pandoc supports raw latex, and so we can also leverage all of the capabilities of LaTeX, but care should be taken not to start loading lots of latex packages; you need to remember the limitations of your output formats.
 
 There are a lot of different possible output formats, including PDF, HTML, Notebooks, other markdown formats, and many others. Corporate formatting can usually be applied without modifying their content. The details of this are out of scope for this paper; instead, see @R-Markdown-Guide or https://bookdown.org/yihui/rmarkdown/documents.html for more information.
 
@@ -87,7 +90,7 @@ There is a learning curve to all of this. I suggest reading this PDF together wi
 rm(list = ls())
 ```
 
-## Please not R {#pleaseNotR}
+## Please not R{#sec:pleaseNotR}
 If you can't handle learning yet another new language, this statement might interest you:
 
 > "A less well-known fact about R Markdown is that many other languages are also supported, such as Python, Julia, C++, and SQL. The support comes from the _knitr_ package, which has provided a large number of language engines."
@@ -133,7 +136,7 @@ An advantage of using markdown and the _knitr_ package is that we can execute th
 
 ```{r user-defined options, message=TRUE, results = 'hold'}
 # Where can files be found?
-#base.dir <- file.path('/Users/andyc/Documents/public/GitHub/lit-pro-sci-pub-demo')
+#base.dir <- file.path(getwd())
 base.dir <-file.path('.')
 base.dir
 
@@ -290,6 +293,17 @@ So far we have demonstrate that we can import and manipulate data and plot resul
 
 To demonstrate that, I can calculate that the maximum value of $y$ in the input data sets was `r max(df.all$y)`. This can be confirmed by checking the input data files. I could also include more complex logic in these statements, for example to say if one statistic is bigger or larger than another.
 
+I can also include equations, and reference them (e.g. Equation \@ref(eq:eq)). This gets weird, because for the best results with equations we should now use LaTeX-style `\begin{equation}... \end{equation}`:
+
+\begin{equation}
+A=\frac{\pi}{27d^2}
+(\#eq:eq)
+\end{equation}
+
+(I've tried using `$$` here, and it doesn't work.)
+
+You've already seen citations [@R-base], which refers to bibtex entries in [_main.bib_](main.bib). These first appeared in section \@ref(sec:intro). Footnotes work too.^[See what I did there?]
+
 We sometimes need to include formatted tables in documents. This can be done using the `kable()` function (Table \@ref(tab:dfall)).
 
 ```{r dfall, echo = TRUE, fig.cap="The _df.all_ data frame."}
@@ -300,7 +314,7 @@ knitr::kable(df.all,
 
 If our goal was just to produce HTML, we could add styling, too. This is detailed in the _kable_ package vignettes.^[In this example I have explicitly stated `_format="pandoc"_` so that this file will work in HTML and PDF.]
 
-## Save {#implementSave}
+## Save{#implementSave}
 We now write our processed data to file.
 
 ```{r save data, echo=TRUE}

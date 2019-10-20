@@ -1,34 +1,3 @@
--   [Introduction](#introduction)
-    -   [Linking analysis and publication
-        workflows](#linking-analysis-and-publication-workflows)
-    -   [How Literate Programming was used to write this
-        document](#how-literate-programming-was-used-to-write-this-document)
-    -   [Please not R](#pleaseNotR)
--   [Implementing a coupled analysis and publication
-    workflow](#implementing-a-coupled-analysis-and-publication-workflow)
-    -   [Setting up the computing
-        environment](#setting-up-the-computing-environment)
-    -   [Load packages](#load-packages)
-    -   [Loading our own routines](#loading-our-own-routines)
-    -   [Load the data](#load-the-data)
-    -   [Plot input data](#plot-input-data)
-    -   [Operate on the data](#operate-on-the-data)
-    -   [Plot the results](#plot-the-results)
-    -   [Write](#implementWrite)
-    -   [Save](#implementSave)
-    -   [Iterate](#implementIterate)
-    -   [Apply formatting](#implementFformat)
--   [Does this approach lead to reproducable
-    research?](#does-this-approach-lead-to-reproducable-research)
-    -   [Protecting confidential data and intellectual
-        property](#protecting-confidential-data-and-intellectual-property)
-    -   [Is this FAIR?](#is-this-fair)
-    -   [Making the results portable](#making-the-results-portable)
--   [Conclusions](#conclusions)
--   [Referencing this document](#referencing-this-document)
--   [Acknowledgements](#acknowledgements)
--   [Bibliography](#bibliography)
-
 <!-- ## If you are reading the source code
 This is R Markdown. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com> or <http://kbroman.org/knitr_knutshell/pages/Rmarkdown.html>.
 
@@ -117,10 +86,17 @@ print(y)
     ## [1] 42
 
 The code chunks above are written in R. They are evaluated at the time
-the document is processed. This is enabled by the *knitr* package. Code
-chunks can be configured so that their outputs are echoed to the
-document (or not). You can thus completely hide data wrangling
-operations in your output PDF and just display results.
+the document is processed. This is enabled by the *knitr* package, which
+also includes support for other languages (See section
+@ref(sec:pleaseNotR)). Code chunks can be configured so that their
+outputs are echoed to the document (or not). You can thus completely
+hide data wrangling operations in your output PDF and just display
+results.
+
+Pandoc supports raw latex, and so we can also leverage all of the
+capabilities of LaTeX, but care should be taken not to start loading
+lots of latex packages; you need to remember the limitations of your
+output formats.
 
 There are a lot of different possible output formats, including PDF,
 HTML, Notebooks, other markdown formats, and many others. Corporate
@@ -223,7 +199,7 @@ execute the code and show the code and results inline:
 
 ``` r
 # Where can files be found?
-#base.dir <- file.path('/Users/andyc/Documents/public/GitHub/lit-pro-sci-pub-demo')
+#base.dir <- file.path(getwd())
 base.dir <-file.path('.')
 base.dir
 
@@ -364,6 +340,17 @@ the input data sets was 100. This can be confirmed by checking the input
 data files. I could also include more complex logic in these statements,
 for example to say if one statistic is bigger or larger than another.
 
+I can also include equations, and reference them (e.g. Equation
+@ref(eq:eq)). This gets weird, because for the best results with
+equations we should now use LaTeX-style
+`\begin{equation}... \end{equation}`:
+
+(I’ve tried using `$$` here, and it doesn’t work.)
+
+You’ve already seen citations (R Core Team 2017), which refers to bibtex
+entries in [*main.bib*](main.bib). These first appeared in section
+@ref(sec:intro). Footnotes work too.[5]
+
 We sometimes need to include formatted tables in documents. This can be
 done using the `kable()` function (Table @ref(tab:dfall)).
 
@@ -389,7 +376,7 @@ knitr::kable(df.all,
 |   12|   30|   40| file2.csv |
 
 If our goal was just to produce HTML, we could add styling, too. This is
-detailed in the *kable* package vignettes.[5]
+detailed in the *kable* package vignettes.[6]
 
 Save
 ----
@@ -601,5 +588,7 @@ Definitive Guide*. <https://bookdown.org/yihui/rmarkdown/>.
 <https://www.calvin.edu/~rpruim/courses/s341/S17/from-class/MathinRmd.html>
 for more information about including maths in R markdown
 
-[5] In this example I have explicitly stated `_format="pandoc"_` so that
+[5] See what I did there?
+
+[6] In this example I have explicitly stated `_format="pandoc"_` so that
 this file will work in HTML and PDF.
