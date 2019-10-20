@@ -1,4 +1,7 @@
-# Introduction
+
+# Literate Programming for scientific publishing demonstration
+... or Lit-pro-sci-pub-demo.
+
 This is the repository for an R file that demonstrates the concept of Literate Programming applied to scientific publishing.
 
 Literate Programming combines data analysis with documentation. It can therefore contribute to reproducible research by enabling reproducibilty.
@@ -8,8 +11,10 @@ Literate Programming combines data analysis with documentation. It can therefore
 Conceivably, Literate Programming could be combined with a Docker image of all of the data for complete portability of results. This is discussed in more detail in main.PDF.
 
 # Requirements
-1. A working installation of R with up-to-date packages. This can be obtained from e.g. http://r-project.org.
-2. Patience and a sense of humour.
+- A working R installation. This can be obtained from http://www.r-project.org. You may find RStudio to be a good IDE.
+- A working LaTeX installation. This can be obtained from https://www.latex-project.org/get/.
+- Pandoc. I suggest you start with the [instructions for installing pandoc](https://rmarkdown.rstudio.com/docs/articles/pandoc.html).
+- Patience and a sense of humour.
 
 # How To Use This Code
 I've split this off into the [`HowTo.md`](HowTo.md) file.
@@ -31,11 +36,13 @@ This software is provided as is, with no guarantees.
 
 Please use the [issue tracker](../../issues) to report problems or request improvements.
 
-# Code Maintainers
-
+# Authors
 * [Andy Clifton](./)
 
 You can get in contact with me by raising an [issue](../../issues).
 
-# Project Contributors
-* Nikola Vasiljevic, DTU
+# License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+# Acknowledgements
+* Many thanks to Nikola Vasiljevic at DTU for encouraging me to get this written up.
