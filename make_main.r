@@ -52,10 +52,9 @@ file.remove("main.html")
 # GitHub markdown
 ## generate the file
 rmarkdown::render("main.rmd",
-    rmarkdown::md_document(variant = "markdown_github"),
+    rmarkdown::md_document(variant = "gfm"),
     run_pandoc = TRUE,
-    clean=TRUE,
-    knit_root_dir= getwd())
+    clean=TRUE)
 
 ## Stuff to fix in the markdown:
 # - won't really know until we load it up

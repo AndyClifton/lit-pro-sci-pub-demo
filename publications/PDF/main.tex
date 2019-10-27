@@ -129,7 +129,7 @@
   \postauthor{\par}
       \predate{\centering\large\emph}
   \postdate{\par}
-    \date{2019-10-20}
+    \date{2019-10-27}
 
 
 \begin{document}
@@ -298,8 +298,8 @@ An advantage of using markdown and the \emph{knitr} package is that we can execu
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{# Where can files be found?}
-\CommentTok{#base.dir <- file.path(getwd())}
-\NormalTok{base.dir <-}\KeywordTok{file.path}\NormalTok{(}\StringTok{'.'}\NormalTok{)}
+\NormalTok{base.dir <-}\StringTok{ }\KeywordTok{file.path}\NormalTok{(}\KeywordTok{getwd}\NormalTok{())}
+\CommentTok{#base.dir <-file.path('.')}
 \NormalTok{base.dir}
 
 \CommentTok{# Who ran this script}
@@ -309,7 +309,7 @@ An advantage of using markdown and the \emph{knitr} package is that we can execu
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "."
+## [1] "/Users/andyc/Documents/public/Github/lit-pro-sci-pub-demo"
 ## [1] "A. Clifton"
 \end{verbatim}
 
@@ -318,7 +318,7 @@ We can also show the value of those variables in the documentation. For example:
 \begin{itemize}
 \tightlist
 \item
-  \texttt{base.dir} is .
+  \texttt{base.dir} is /Users/andyc/Documents/public/Github/lit-pro-sci-pub-demo
 \item
   \texttt{made.by} is A. Clifton.
 \end{itemize}
@@ -357,6 +357,14 @@ Looking at your file system, you'll see there is now a new directory called \emp
 Packages are required to supplement base functions in R and many other languages. For example, this script requires the \emph{reticulate}, \emph{bookdown}, \emph{ggplot2}, \emph{grid}, \emph{knitr}, \emph{RColorBrewer}, \emph{rgdal}, and \emph{stringr} packages to run. These are called from the script using the \texttt{require()} function. This assumes that the packages are available on your system.\footnote{For details of how to install packages, see the RStudio help.}
 
 ** Note: ** The use of packages represents a challenge to reproducable and repeatable research as it is possible that the function and output of the packages may change over time.
+
+\begin{verbatim}
+## Warning: package 'reshape2' was built under R version 3.4.3
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: package 'stringr' was built under R version 3.4.4
+\end{verbatim}
 
 \hypertarget{loading-our-own-routines}{%
 \subsection{Loading our own routines}\label{loading-our-own-routines}}
@@ -437,10 +445,10 @@ To demonstrate that, I can calculate that the maximum value of \(y\) in the inpu
 
 I can also include equations, and reference them (e.g.~Equation \eqref{eq:eq}). This gets weird, because for the best results with equations we should now use LaTeX-style \texttt{\textbackslash{}begin\{equation\}...\ \textbackslash{}end\{equation\}}:
 
-\begin{equation}
-A=\frac{\pi}{27d^2}
+\[
 \label{eq:eq}
-\end{equation}
+A=\frac{\pi}{27d^2}
+\]
 
 (I've tried using \texttt{\$\$} here, and it doesn't work.)
 

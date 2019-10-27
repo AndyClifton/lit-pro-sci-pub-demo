@@ -3,6 +3,14 @@ title: "A demonstration of combined scientific data processing and publication u
 author: "Andy Clifton"
 date: '`r Sys.Date()`'
 output:
+  bookdown::html_document2:
+    number_sections: true
+    toc: true
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+  rmarkdown::github_document:
+    pandoc_args: --webtex
   bookdown::pdf_document2:
     latex_engine: pdflatex
     toc: true
@@ -10,18 +18,9 @@ output:
     fig_caption: true
     keep_tex: true
     citation_package: natbib
-  bookdown::html_document2:
-    number_sections: true
-    toc: true
-    toc_float:
-      collapsed: false
-      smooth_scroll: false
-  md_document:
-    variant: markdown_github
-    number_sections: true
-    pandoc args: ["--filter=pandoc-secnos"]
   bookdown::word_document2:
     number_sections: true
+    fig_caption: yes
     reference_docx: default
 fontsize: 11pt
 geometry: margin=1in
@@ -136,8 +135,8 @@ An advantage of using markdown and the _knitr_ package is that we can execute th
 
 ```{r user-defined options, message=TRUE, results = 'hold'}
 # Where can files be found?
-#base.dir <- file.path(getwd())
-base.dir <-file.path('.')
+base.dir <- file.path(getwd())
+#base.dir <-file.path('.')
 base.dir
 
 # Who ran this script
@@ -295,10 +294,10 @@ To demonstrate that, I can calculate that the maximum value of $y$ in the input 
 
 I can also include equations, and reference them (e.g. Equation \@ref(eq:eq)). This gets weird, because for the best results with equations we should now use LaTeX-style `\begin{equation}... \end{equation}`:
 
-\begin{equation}
-A=\frac{\pi}{27d^2}
+$$
 (\#eq:eq)
-\end{equation}
+A=\frac{\pi}{27d^2}
+$$
 
 (I've tried using `$$` here, and it doesn't work.)
 

@@ -2,10 +2,11 @@
 This is R Markdown. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com> or <http://kbroman.org/knitr_knutshell/pages/Rmarkdown.html>.
 
 This script is designed to be used with knitr in R. -->
-Introduction
-============
+
+# Introduction
 
 <!-- Something something reproducible research, mumble, grumble, get off my lawn, grumble. -->
+
 Scientific progress is underpinned by the exchange of information
 between scientists. This allows others to reuse methods, repeat work and
 confirm – or refute – findings, and adds to the reputability of the
@@ -36,16 +37,16 @@ persists. What is therefore needed is a method to clearly link data,
 algorithms, and publications, and allow that to be shared. This would be
 beneficial to many people.
 
-Linking analysis and publication workflows
-------------------------------------------
+## Linking analysis and publication workflows
 
 This document demonstrates the application of Literate Programming to
 reproducible research. Literate programming means that the program
 documentation is complete and contained within the program itself (Knuth
-1984)[1]. It is important to note that the documentation is effectively
-a publication, and thus it is possible to combine data analysis with the
-creation of a publication in the same file. The use of literate
-programming therefore mitigates this barrier to reproducible research.
+1984)\[1\]. It is important to note that the documentation is
+effectively a publication, and thus it is possible to combine data
+analysis with the creation of a publication in the same file. The use of
+literate programming therefore mitigates this barrier to reproducible
+research.
 
 A literate program could be stored together with the input files,
 processing algorithms, and output documents in a repository. That
@@ -56,8 +57,7 @@ and used by anyone to replicate the output documents. Later in this
 document I will explore some different ways of storing and distributing
 such information depending on confidentiality requirements.
 
-How Literate Programming was used to write this document
---------------------------------------------------------
+## How Literate Programming was used to write this document
 
 In this example, an output PDF document and results are generated from a
 file called *main.rmd*. *main.rmd* is an [R markdown
@@ -113,12 +113,12 @@ writing using R markdown can be found in Xie, Allaire, and Grolemund
 
 There is a learning curve to all of this. I suggest reading this PDF
 together with the R markdown file (*main.rmd*) and possibly the *knitr*
-package’s instructions[2]. This will greatly help in understanding what
-is done in the processing and what makes it to the publication.
+package’s instructions\[2\]. This will greatly help in understanding
+what is done in the processing and what makes it to the publication.
 
 <!-- ## Execute some code without displaying results. -->
-Please not R
-------------
+
+## Please not R
 
 If you can’t handle learning yet another new language, this statement
 might interest you:
@@ -127,7 +127,7 @@ might interest you:
 > are also supported, such as Python, Julia, C++, and SQL. The support
 > comes from the *knitr* package, which has provided a large number of
 > language engines.”
->
+> 
 > — Xie, Allaire, and Grolemund (2019)
 
 You can use the other programming languages by replacing the \`\` {r, ’’
@@ -159,8 +159,7 @@ The only challenge that might arise is that the document is
 within R, but that step can be dealt with relatively easily, for example
 leveraging online resources such as the stackoverflow network.
 
-Implementing a coupled analysis and publication workflow
-========================================================
+# Implementing a coupled analysis and publication workflow
 
 Let’s assume that you have formed a hypothesis and gathered a bunch of
 data to test it. You now want to analyse that data and create a report
@@ -183,15 +182,14 @@ workflow usually follows a similar path:
 All of this can be captured in our *main.rmd* R Markdown file, with the
 exception of the final \`\`submit’’ stage.
 
-Setting up the computing environment
-------------------------------------
+## Setting up the computing environment
 
 Like most scripts, *main.rmd* includes a few variables that the user
 must set to run the analysis.
 
--   The `base.dir` variable defines the location of the files required
+  - The `base.dir` variable defines the location of the files required
     for this analysis.
--   The `made.by` variable forms part of a label that will be added to
+  - The `made.by` variable forms part of a label that will be added to
     the plots.
 
 An advantage of using markdown and the *knitr* package is that we can
@@ -199,8 +197,8 @@ execute the code and show the code and results inline:
 
 ``` r
 # Where can files be found?
-#base.dir <- file.path(getwd())
-base.dir <-file.path('.')
+base.dir <- file.path(getwd())
+#base.dir <-file.path('.')
 base.dir
 
 # Who ran this script
@@ -208,20 +206,21 @@ made.by = "A. Clifton"
 made.by
 ```
 
-    ## [1] "."
+    ## [1] "/Users/andyc/Documents/public/Github/lit-pro-sci-pub-demo"
     ## [1] "A. Clifton"
 
 We can also show the value of those variables in the documentation. For
 example:
 
--   `base.dir` is .
--   `made.by` is A. Clifton.
+  - `base.dir` is
+    /Users/andyc/Documents/public/Github/lit-pro-sci-pub-demo
+  - `made.by` is A. Clifton.
 
 Imagine that when we started our project, we set up several
 subdirectories in `base.dir`. These are:
 
--   *code/* contains functions required for the analysis
--   *data/* contains the data files to be analyzed.
+  - *code/* contains functions required for the analysis
+  - *data/* contains the data files to be analyzed.
 
 Let’s tell the code where to find these directories. And, while we do
 it, we can also change R’s working directory (`working.dir`) to the root
@@ -242,22 +241,20 @@ We now want to create a new directory for the results of the analysis.
 Looking at your file system, you’ll see there is now a new directory
 called *analysis*.
 
-Load packages
--------------
+## Load packages
 
 Packages are required to supplement base functions in R and many other
 languages. For example, this script requires the *reticulate*,
 *bookdown*, *ggplot2*, *grid*, *knitr*, *RColorBrewer*, *rgdal*, and
 *stringr* packages to run. These are called from the script using the
 `require()` function. This assumes that the packages are available on
-your system.[3]
+your system.\[3\]
 
 \*\* Note: \*\* The use of packages represents a challenge to
 reproducable and repeatable research as it is possible that the function
 and output of the packages may change over time.
 
-Loading our own routines
-------------------------
+## Loading our own routines
 
 Every data processing workflow requires its own scripts or functions to
 run. In this example, they are included in the `code.dir` (*code*)
@@ -278,22 +275,20 @@ for (file in code.files){
     ## [1] "Sourcing plotSomething.R."
     ## [1] "Sourcing theme_Literate.R."
 
-Load the data
--------------
+## Load the data
 
 We now analyse the data from the simple data set. In this case, code has
 been written to load all of the files in the `data.dir` directory
 (data). I’m also going to map the three columns in the data files to the
-variables *x*, *y*, and *z*.[4]
+variables \(x\), \(y\), and \(z\).\[4\]
 
-Plot input data
----------------
+## Plot input data
 
 The next step is to plot the input data. Let’s plot all of the input
 data together using the `plotSomething()` function in the `code.dir`
 directory.
 
-![Input Data](main_files/figure-markdown_github/plot-input-data-1.png)
+![Input Data](main_files/figure-gfm/plot-input-data-1.png)
 
 I’ve used the `ggplot2` package to make this figure. This has the
 advantage that figures can be given a consistent look and feel through
@@ -302,30 +297,26 @@ ggplot’s themes.
 For convenience, we’ll also save a copy of the figure as a *.png* file
 to the `output.dir` (*analysis/*) directory.
 
-Operate on the data
--------------------
+## Operate on the data
 
 At this point we can do any number of operations on the data. For sake
-of demonstration, let’s add 2 to all *x* values.
+of demonstration, let’s add 2 to all \(x\) values.
 
 ``` r
 df.all <- df.in
 df.all$x <- df.in$x + 2.0
 ```
 
-Plot the results
-----------------
+## Plot the results
 
 Let’s run that `plotSomething()` routine again.
 
-![Modified
-Data](main_files/figure-markdown_github/plot-modified-data-1.png)
+![Modified Data](main_files/figure-gfm/plot-modified-data-1.png)
 
 And, as we can see in Figure @ref(fig:plot-modified-data), the data have
-shifted along *x* by a small amount.
+shifted along \(x\) by a small amount.
 
-Write
------
+## Write
 
 Writing in an R Markdown document is similar to most other types of
 markdown.
@@ -335,21 +326,26 @@ plot results. Another important part of a publication is the ability to
 generate statistics or summary information from data and include that in
 our text.
 
-To demonstrate that, I can calculate that the maximum value of *y* in
+To demonstrate that, I can calculate that the maximum value of \(y\) in
 the input data sets was 100. This can be confirmed by checking the input
 data files. I could also include more complex logic in these statements,
 for example to say if one statistic is bigger or larger than another.
 
 I can also include equations, and reference them (e.g. Equation
 @ref(eq:eq)). This gets weird, because for the best results with
-equations we should now use LaTeX-style
-`\begin{equation}... \end{equation}`:
+equations we should now use LaTeX-style `\begin{equation}...
+\end{equation}`:
+
+\[
+(\#eq:eq)
+A=\frac{\pi}{27d^2}
+\]
 
 (I’ve tried using `$$` here, and it doesn’t work.)
 
 You’ve already seen citations (R Core Team 2017), which refers to bibtex
 entries in [*main.bib*](main.bib). These first appeared in section
-@ref(sec:intro). Footnotes work too.[5]
+@ref(sec:intro). Footnotes work too.\[5\]
 
 We sometimes need to include formatted tables in documents. This can be
 done using the `kable()` function (Table @ref(tab:dfall)).
@@ -360,26 +356,27 @@ knitr::kable(df.all,
   caption = "The _df.all_ data frame.")
 ```
 
-|    x|    y|    z| source    |
-|----:|----:|----:|:----------|
-|    3|    1|    3| file1.csv |
-|    4|    4|    6| file1.csv |
-|    5|    9|    9| file1.csv |
-|    6|   16|   12| file1.csv |
-|    7|   25|   15| file1.csv |
-|   12|  100|   30| file1.csv |
-|    3|    1|    4| file2.csv |
-|    4|    6|    8| file2.csv |
-|    5|    9|   12| file2.csv |
-|    6|   12|   16| file2.csv |
-|    7|   15|   20| file2.csv |
-|   12|   30|   40| file2.csv |
+|  x |   y |  z | source    |
+| -: | --: | -: | :-------- |
+|  3 |   1 |  3 | file1.csv |
+|  4 |   4 |  6 | file1.csv |
+|  5 |   9 |  9 | file1.csv |
+|  6 |  16 | 12 | file1.csv |
+|  7 |  25 | 15 | file1.csv |
+| 12 | 100 | 30 | file1.csv |
+|  3 |   1 |  4 | file2.csv |
+|  4 |   6 |  8 | file2.csv |
+|  5 |   9 | 12 | file2.csv |
+|  6 |  12 | 16 | file2.csv |
+|  7 |  15 | 20 | file2.csv |
+| 12 |  30 | 40 | file2.csv |
+
+The *df.all* data frame.
 
 If our goal was just to produce HTML, we could add styling, too. This is
-detailed in the *kable* package vignettes.[6]
+detailed in the *kable* package vignettes.\[6\]
 
-Save
-----
+## Save
 
 We now write our processed data to file.
 
@@ -401,8 +398,8 @@ save.image(file=file.path(base.dir, output.dir,"workspace.RData"))
 ```
 
 <!--- ? Is it possible to save packages locally the first time they are called and then pick them up there afterwards, instead of from a repo? --->
-Iterate
--------
+
+## Iterate
 
 To re-run the analysis, render *main.rmd* every so often following the
 instructions in *HOWTO.md*.
@@ -411,8 +408,7 @@ Some IDEs also allow the code chunks to be evaluated separately, which
 might help when dealing with larger data sets, more complex analysis, or
 bigger documents.
 
-Apply formatting
-----------------
+## Apply formatting
 
 Scientific Journals often have their own formatting requirements. These
 requirements can still be met using markdown. The mechanics of such a
@@ -422,8 +418,7 @@ look at the [*rticles*](https://github.com/rstudio/rticles) package and
 to use the detailed instructions in section 13 of the R Markdown Guide
 (Xie, Allaire, and Grolemund 2019).
 
-Does this approach lead to reproducable research?
-=================================================
+# Does this approach lead to reproducable research?
 
 If you would like to test the reproducibility of this approach, try
 this:
@@ -440,15 +435,14 @@ this:
 You should now be left with some raw data and a few codes. There’s no
 documentation anymore and no results.
 
-1.  Render *main.rmd*. There are instructions on how to do this in the
+5.  Render *main.rmd*. There are instructions on how to do this in the
     *HOWTO.md* file included in the root directory of the repository.
 
 You now should have your data folder back and all of the documentation,
 but you’ll notice that the dates on the figures might have changed. This
 is reproducable research in action.
 
-Protecting confidential data and intellectual property
-------------------------------------------------------
+## Protecting confidential data and intellectual property
 
 In an ideal world, I would simply throw all of my data and code into a
 directory, push it to Github or some other repository, and share the URL
@@ -471,9 +465,9 @@ share all of their processes and results.
 
 There are two subsets here that we should remember:
 
--   the academic researcher who is required to share their data as a
+  - the academic researcher who is required to share their data as a
     condition of their funding.
--   the academic researcher that cannot share their raw data as it was
+  - the academic researcher that cannot share their raw data as it was
     provided by an industry partner.
 
 > “need to finish this”
@@ -504,8 +498,7 @@ raw data.
 
 > “need to finish this”
 
-Is this FAIR?
--------------
+## Is this FAIR?
 
 \`\`FAIR’’ data stands for data that are Findable, Accessible,
 Interoperable, and Reusable.
@@ -519,10 +512,9 @@ not ideal; besides the meaningless column headers, there’s no metadata.
 Instead, it would be ideal if the data had been in some kind of
 self-describing format. It would have been even better if I knew which
 industry I was targeting and had been able to use a standardized format.
-This is left to the reader as an exercise!
+This is left to the reader as an exercise\!
 
-Making the results portable
----------------------------
+## Making the results portable
 
 One way to ensure repeatability and reproducability may be to have a
 generic \`\`data processing’’ image of a computer system, e.g. as a
@@ -536,19 +528,19 @@ would be the need to migrate the data every 5 years or so to a new
 system, which would be required to avoid data being stranded on old
 software.
 
-> “need to finish this”
+> “need to finish
+this”
 
 <!--- Algorithms could be called directly from third party services or accessed via APIs. This shifts the onus to those third parties to provide the tracking required for auditting, but does preserve intellectual property. --->
-Conclusions
-===========
+
+# Conclusions
 
 Literate programming allows the creation of a single document that
 captures all of the process of preparing and analysing data, and
 creating a publication to describe that data. This is a fundamental
 requirement of reproducible research.
 
-Referencing this document
-=========================
+# Referencing this document
 
 This document has been assigned the Digital Object Identifier
 [10.5281/zenodo.3497450](http://dx.doi.org/10.5281/zenodo.3497450).
@@ -559,36 +551,50 @@ Citations in a range of formats can be obtained through Zenodo.
 The source code for this document is available through
 [github.com/AndyClifton/lit-pro-sci-pub-demo](https://github.com/AndyClifton/lit-pro-sci-pub-demo).
 
-Acknowledgements
-================
+# Acknowledgements
 
 Many thanks to Nikola Vasiljevic at DTU for prompting me to get this
 done.
 
-Bibliography
-============
+# Bibliography
+
+<div id="refs" class="references">
+
+<div id="ref-Knuth1984">
 
 Knuth, Donald E. 1984. “Literate Programming.” *The Computer Journal* 27
 (2). British Computer Society: 97–111.
+
+</div>
+
+<div id="ref-R-base">
 
 R Core Team. 2017. *R: A Language and Environment for Statistical
 Computing*. Vienna, Austria: R Foundation for Statistical Computing.
 <https://www.R-project.org/>.
 
+</div>
+
+<div id="ref-R-Markdown-Guide">
+
 Xie, Yihui, J. J. Allaire, and Garrett Grolemund. 2019. *R Markdown: The
 Definitive Guide*. <https://bookdown.org/yihui/rmarkdown/>.
 
-[1] Yes, that’s the same \`Knuth’ who invented LaTeX
+</div>
 
-[2] See <https://yihui.name/knitr/>
+</div>
 
-[3] For details of how to install packages, see the RStudio help.
+1.  Yes, that’s the same \`Knuth’ who invented LaTeX
 
-[4] See
-<https://www.calvin.edu/~rpruim/courses/s341/S17/from-class/MathinRmd.html>
-for more information about including maths in R markdown
+2.  See <https://yihui.name/knitr/>
 
-[5] See what I did there?
+3.  For details of how to install packages, see the RStudio help.
 
-[6] In this example I have explicitly stated `_format="pandoc"_` so that
-this file will work in HTML and PDF.
+4.  See
+    <https://www.calvin.edu/~rpruim/courses/s341/S17/from-class/MathinRmd.html>
+    for more information about including maths in R markdown
+
+5.  See what I did there?
+
+6.  In this example I have explicitly stated `_format="pandoc"_` so that
+    this file will work in HTML and PDF.
