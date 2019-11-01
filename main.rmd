@@ -1,16 +1,11 @@
 ---
-title: "A demonstration of combined scientific data processing and publication using Literate Programming in R"
+title: "Combining scientific data processing and publication using Literate Programming to enable reproducible research"
 author: "Andy Clifton"
 date: '`r Sys.Date()`'
 output:
-  bookdown::html_document2:
-    number_sections: true
-    toc: true
-    toc_float:
-      collapsed: false
-      smooth_scroll: false
-  rmarkdown::github_document:
-    pandoc_args: --webtex
+  bookdown::word_document2:
+    fig_caption: yes
+    reference_docx: default
   bookdown::pdf_document2:
     latex_engine: pdflatex
     toc: true
@@ -18,10 +13,12 @@ output:
     fig_caption: true
     keep_tex: true
     citation_package: natbib
-  bookdown::word_document2:
+  bookdown::html_document2:
     number_sections: true
-    fig_caption: yes
-    reference_docx: default
+    toc: true
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
 fontsize: 11pt
 geometry: margin=1in
 graphics: yes
@@ -31,7 +28,8 @@ urlcolor: red
 citecolor: cyan
 link_citations: true
 ---
-<!-- ## If you are reading the source code
+
+<!-- If you are reading the source code:
 This is R Markdown. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com> or <http://kbroman.org/knitr_knutshell/pages/Rmarkdown.html>.
 
 This script is designed to be used with knitr in R. -->
@@ -40,7 +38,7 @@ This script is designed to be used with knitr in R. -->
 
 <!-- Something something reproducible research, mumble, grumble, get off my lawn, grumble. -->
 
-Scientific progress is underpinned by the exchange of information between scientists. This allows others to reuse methods, repeat work and confirm -- or refute -- findings, and adds to the reputability of the research. These ideals are sometimes lumped together under the heading of ``reproducible research''. As a result of applying these methods, new developments can make their way into the body of knowledge.
+Scientific progress is underpinned by the exchange of information between scientists. This allows others to reuse methods, repeat work and confirm -- or refute -- findings, and adds to the reputation of the research. These ideals are sometimes lumped together under the heading of ``reproducible research''. As a result of applying these methods, new developments can make their way into the body of knowledge.
 
 Reproducible research is beneficial in many non-academic settings, for example by showing that a consultant applied all relevant standards in designing a product, or during an audit when it can be used to show conformance to business processes.
 
@@ -83,7 +81,7 @@ Instructions for how to run process (render) _main.rmd_ are included in the _HOW
 
 There is a learning curve to all of this. I suggest reading this PDF together with the R markdown file (_main.rmd_) and possibly the _knitr_ package's  instructions^[See https://yihui.name/knitr/]. This will greatly help in understanding what is done in the processing and what makes it to the publication.
 
-<!-- ## Execute some code without displaying results. -->
+<!-- Execute some code without displaying results. -->
 
 ```{r clean up, echo = FALSE}
 rm(list = ls())
@@ -133,15 +131,11 @@ Like most scripts, _main.rmd_ includes a few variables that the user must set to
 
 An advantage of using markdown and the _knitr_ package is that we can execute the code and show the code and results inline:
 
-```{r user-defined options, message=TRUE, results = 'hold'}
+```{r user-defined options, echo=TRUE, results = 'hold'}
 # Where can files be found?
 base.dir <- file.path(getwd())
-#base.dir <-file.path('.')
-base.dir
-
 # Who ran this script
 made.by = "A. Clifton"
-made.by
 ```
 
 We can also show the value of those variables in the documentation. For example:
@@ -292,14 +286,16 @@ So far we have demonstrate that we can import and manipulate data and plot resul
 
 To demonstrate that, I can calculate that the maximum value of $y$ in the input data sets was `r max(df.all$y)`. This can be confirmed by checking the input data files. I could also include more complex logic in these statements, for example to say if one statistic is bigger or larger than another.
 
-I can also include equations, and reference them (e.g. Equation \@ref(eq:eq)). This gets weird, because for the best results with equations we should now use LaTeX-style `\begin{equation}... \end{equation}`:
+I can also include equations, and reference them (e.g. Equation \@ref(eq:eq)). Markdown does not directly support equations, so we can be a bit flexible in notation. For simplicity in working with other parts of the workflow, I use Latex `begin{equation}...end{equation}` to indicate an equation.
 
-$$
-(\#eq:eq)
+\begin{equation}
 A=\frac{\pi}{27d^2}
-$$
+(\#eq:eq)
+\end{equation}
 
-(I've tried using `$$` here, and it doesn't work.)
+This also works well with Word-format output.
+
+<!-- see e.g. https://stackoverflow.com/questions/55923290/consistent-math-equation-numbering-in-bookdown-across-pdf-docx-html-output?noredirect=1&lq=1 for comparisons -->
 
 You've already seen citations [@R-base], which refers to bibtex entries in [_main.bib_](main.bib). These first appeared in section \@ref(sec:intro). Footnotes work too.^[See what I did there?]
 
@@ -356,47 +352,23 @@ If you would like to test the reproducibility of this approach, try this:
 
 You now should have your data folder back and all of the documentation, but you'll notice that the dates on the figures might have changed. This is reproducable research in action.
 
-## Protecting confidential data and intellectual property
-In an ideal world, I would simply throw all of my data and code into a directory, push it to Github or some other repository, and share the URL with everyone. This is effectively what you are reading.
-
-Unfortunately, things don't work that way. My data might be commercially sensitive, and my algorithms represent intellectual property. As a result, both data and codes might need to be protected. But the story is not so clear cut. It may be helpful at this point to consider a few real-world users and their needs, and how they might modify the above processes to protect their data and intellectual property.
-
-There are doubtless many other issues and anyone concerned about this is encouraged to consult an expert.
-
-### The academic researcher
-... is driven by the need for recognition and cooperation, and wants to share all of their processes and results.
-
-There are two subsets here that we should remember:
-
- - the academic researcher who is required to share their data as a condition of their funding.
- - the academic researcher that cannot share their raw data as it was provided by an industry partner.
+### R^5
 
 > "need to finish this"
-
-### The consultant
-... wants to provide scientifically rigorous results to clients without sharing all of the algorithms that go into those results. However, they might be subject to audits that require them to connect end results to processing routines and data, and recreate those steps if required. This is particularly relevant if processes are occasionally recalibrated.
-
-> "need to finish this"
-
-
-### The internal researcher
-... wants to generate a record of research for internal purposes
-
-This document gave a simple example where data was obtained from text files that are stored in the same repository. However, it's equally possible that the raw data would have been called from a remote database at run time (or cached) and should be kept confidential.
-
-This can be done by not saving them to file. It would be desirable instead to store data IDs that would allow traceability. This could be combined with saving the results of the data processing, rather than the raw data.
-
-> "need to finish this"
-
 
 ## Is this FAIR?
 ``FAIR'' data stands for data that are Findable, Accessible, Interoperable, and Reusable.
 
 > "need to finish this"
 
-### Interoperable data
-Our data were stored as comma-separated values in .csv files. These are not ideal; besides the meaningless column headers, there's no metadata. Instead, it would be ideal if the data had been in some kind of self-describing format. It would have been even better if I knew which industry I was targeting and had been able to use a standardized format. This is left to the reader as an exercise!
+### Findable
 
+### Accesible
+
+### Interoperable data
+Our data were stored as comma-separated values in .csv files. These are not ideal; besides the meaningless column headers, there's no metadata. Instead, it would have been better if the data had been in a relevant, `standardized` format that included metadata in the headers. An even better solution would be  a self-describing format that includes metadata for all of the included fields.
+
+### Reusable
 
 ## Making the results portable
 One way to ensure repeatability and reproducability may be to have a generic ``data processing'' image of a computer system, e.g. as a Docker image, that is started for each new project and used _only_ for that project. This clean system is then used for one data processing task which is managed through a file such as the one you are reading. When the project is complete, the image is simply stored for as long as required. This would also avoid problems associated with changes introduced by package and system updates. A drawback to this approach would be the need to migrate the data every 5 years or so to a new system, which would be required to avoid data being stranded on old software.

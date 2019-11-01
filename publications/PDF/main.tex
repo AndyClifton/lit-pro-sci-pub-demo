@@ -25,7 +25,7 @@
 \usepackage{hyperref}
 \PassOptionsToPackage{usenames,dvipsnames}{color} % color is loaded by hyperref
 \hypersetup{unicode=true,
-            pdftitle={A demonstration of combined scientific data processing and publication using Literate Programming in R},
+            pdftitle={Combining scientific data processing and publication using Literate Programming to enable reproducible research},
             pdfauthor={Andy Clifton},
             colorlinks=true,
             linkcolor=blue,
@@ -121,7 +121,7 @@
 
 \setlength{\droptitle}{-2em}
 
-  \title{A demonstration of combined scientific data processing and publication using Literate Programming in R}
+  \title{Combining scientific data processing and publication using Literate Programming to enable reproducible research}
     \pretitle{\vspace{\droptitle}\centering\huge}
   \posttitle{\par}
     \author{Andy Clifton}
@@ -129,7 +129,7 @@
   \postauthor{\par}
       \predate{\centering\large\emph}
   \postdate{\par}
-    \date{2019-10-27}
+    \date{2019-11-01}
 
 
 \begin{document}
@@ -143,7 +143,7 @@
 \hypertarget{sec:intro}{%
 \section{Introduction}\label{sec:intro}}
 
-Scientific progress is underpinned by the exchange of information between scientists. This allows others to reuse methods, repeat work and confirm -- or refute -- findings, and adds to the reputability of the research. These ideals are sometimes lumped together under the heading of ``reproducible research''. As a result of applying these methods, new developments can make their way into the body of knowledge.
+Scientific progress is underpinned by the exchange of information between scientists. This allows others to reuse methods, repeat work and confirm -- or refute -- findings, and adds to the reputation of the research. These ideals are sometimes lumped together under the heading of ``reproducible research''. As a result of applying these methods, new developments can make their way into the body of knowledge.
 
 Reproducible research is beneficial in many non-academic settings, for example by showing that a consultant applied all relevant standards in designing a product, or during an audit when it can be used to show conformance to business processes.
 
@@ -299,19 +299,10 @@ An advantage of using markdown and the \emph{knitr} package is that we can execu
 \begin{Highlighting}[]
 \CommentTok{# Where can files be found?}
 \NormalTok{base.dir <-}\StringTok{ }\KeywordTok{file.path}\NormalTok{(}\KeywordTok{getwd}\NormalTok{())}
-\CommentTok{#base.dir <-file.path('.')}
-\NormalTok{base.dir}
-
 \CommentTok{# Who ran this script}
 \NormalTok{made.by =}\StringTok{ "A. Clifton"}
-\NormalTok{made.by}
 \end{Highlighting}
 \end{Shaded}
-
-\begin{verbatim}
-## [1] "/Users/andyc/Documents/public/Github/lit-pro-sci-pub-demo"
-## [1] "A. Clifton"
-\end{verbatim}
 
 We can also show the value of those variables in the documentation. For example:
 
@@ -357,14 +348,6 @@ Looking at your file system, you'll see there is now a new directory called \emp
 Packages are required to supplement base functions in R and many other languages. For example, this script requires the \emph{reticulate}, \emph{bookdown}, \emph{ggplot2}, \emph{grid}, \emph{knitr}, \emph{RColorBrewer}, \emph{rgdal}, and \emph{stringr} packages to run. These are called from the script using the \texttt{require()} function. This assumes that the packages are available on your system.\footnote{For details of how to install packages, see the RStudio help.}
 
 ** Note: ** The use of packages represents a challenge to reproducable and repeatable research as it is possible that the function and output of the packages may change over time.
-
-\begin{verbatim}
-## Warning: package 'reshape2' was built under R version 3.4.3
-\end{verbatim}
-
-\begin{verbatim}
-## Warning: package 'stringr' was built under R version 3.4.4
-\end{verbatim}
 
 \hypertarget{loading-our-own-routines}{%
 \subsection{Loading our own routines}\label{loading-our-own-routines}}
@@ -443,14 +426,14 @@ So far we have demonstrate that we can import and manipulate data and plot resul
 
 To demonstrate that, I can calculate that the maximum value of \(y\) in the input data sets was 100. This can be confirmed by checking the input data files. I could also include more complex logic in these statements, for example to say if one statistic is bigger or larger than another.
 
-I can also include equations, and reference them (e.g.~Equation \eqref{eq:eq}). This gets weird, because for the best results with equations we should now use LaTeX-style \texttt{\textbackslash{}begin\{equation\}...\ \textbackslash{}end\{equation\}}:
+I can also include equations, and reference them (e.g.~Equation \eqref{eq:eq}). Markdown does not directly support equations, so we can be a bit flexible in notation. For simplicity in working with other parts of the workflow, I use Latex \texttt{begin\{equation\}...end\{equation\}} to indicate an equation.
 
-\[
-\label{eq:eq}
+\begin{equation}
 A=\frac{\pi}{27d^2}
-\]
+\label{eq:eq}
+\end{equation}
 
-(I've tried using \texttt{\$\$} here, and it doesn't work.)
+This also works well with Word-format output.
 
 You've already seen citations \citep{R-base}, which refers to bibtex entries in \href{main.bib}{\emph{main.bib}}. These first appeared in section \ref{sec:intro}. Footnotes work too.\footnote{See what I did there?}
 
@@ -565,51 +548,8 @@ You should now be left with some raw data and a few codes. There's no documentat
 
 You now should have your data folder back and all of the documentation, but you'll notice that the dates on the figures might have changed. This is reproducable research in action.
 
-\hypertarget{protecting-confidential-data-and-intellectual-property}{%
-\subsection{Protecting confidential data and intellectual property}\label{protecting-confidential-data-and-intellectual-property}}
-
-In an ideal world, I would simply throw all of my data and code into a directory, push it to Github or some other repository, and share the URL with everyone. This is effectively what you are reading.
-
-Unfortunately, things don't work that way. My data might be commercially sensitive, and my algorithms represent intellectual property. As a result, both data and codes might need to be protected. But the story is not so clear cut. It may be helpful at this point to consider a few real-world users and their needs, and how they might modify the above processes to protect their data and intellectual property.
-
-There are doubtless many other issues and anyone concerned about this is encouraged to consult an expert.
-
-\hypertarget{the-academic-researcher}{%
-\subsubsection{The academic researcher}\label{the-academic-researcher}}
-
-\ldots{} is driven by the need for recognition and cooperation, and wants to share all of their processes and results.
-
-There are two subsets here that we should remember:
-
-\begin{itemize}
-\tightlist
-\item
-  the academic researcher who is required to share their data as a condition of their funding.
-\item
-  the academic researcher that cannot share their raw data as it was provided by an industry partner.
-\end{itemize}
-
-\begin{quote}
-``need to finish this''
-\end{quote}
-
-\hypertarget{the-consultant}{%
-\subsubsection{The consultant}\label{the-consultant}}
-
-\ldots{} wants to provide scientifically rigorous results to clients without sharing all of the algorithms that go into those results. However, they might be subject to audits that require them to connect end results to processing routines and data, and recreate those steps if required. This is particularly relevant if processes are occasionally recalibrated.
-
-\begin{quote}
-``need to finish this''
-\end{quote}
-
-\hypertarget{the-internal-researcher}{%
-\subsubsection{The internal researcher}\label{the-internal-researcher}}
-
-\ldots{} wants to generate a record of research for internal purposes
-
-This document gave a simple example where data was obtained from text files that are stored in the same repository. However, it's equally possible that the raw data would have been called from a remote database at run time (or cached) and should be kept confidential.
-
-This can be done by not saving them to file. It would be desirable instead to store data IDs that would allow traceability. This could be combined with saving the results of the data processing, rather than the raw data.
+\hypertarget{r5}{%
+\subsubsection{R\^{}5}\label{r5}}
 
 \begin{quote}
 ``need to finish this''
@@ -624,10 +564,19 @@ This can be done by not saving them to file. It would be desirable instead to st
 ``need to finish this''
 \end{quote}
 
+\hypertarget{findable}{%
+\subsubsection{Findable}\label{findable}}
+
+\hypertarget{accesible}{%
+\subsubsection{Accesible}\label{accesible}}
+
 \hypertarget{interoperable-data}{%
 \subsubsection{Interoperable data}\label{interoperable-data}}
 
-Our data were stored as comma-separated values in .csv files. These are not ideal; besides the meaningless column headers, there's no metadata. Instead, it would be ideal if the data had been in some kind of self-describing format. It would have been even better if I knew which industry I was targeting and had been able to use a standardized format. This is left to the reader as an exercise!
+Our data were stored as comma-separated values in .csv files. These are not ideal; besides the meaningless column headers, there's no metadata. Instead, it would have been better if the data had been in a relevant, \texttt{standardized} format that included metadata in the headers. An even better solution would be a self-describing format that includes metadata for all of the included fields.
+
+\hypertarget{reusable}{%
+\subsubsection{Reusable}\label{reusable}}
 
 \hypertarget{making-the-results-portable}{%
 \subsection{Making the results portable}\label{making-the-results-portable}}

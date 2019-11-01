@@ -49,26 +49,6 @@ dir.create(html.dir,recursive=TRUE)
 file.copy("main.html", html.dir)
 file.remove("main.html")
 
-# GitHub markdown
-## generate the file
-rmarkdown::render("main.rmd",
-    rmarkdown::md_document(variant = "gfm"),
-    run_pandoc = TRUE,
-    clean=TRUE)
-
-## Stuff to fix in the markdown:
-# - won't really know until we load it up
-
-## create the destination
-gfm.dir <- file.path(getwd(),"publications","md")
-dir.create(gfm.dir,recursive=TRUE)
-# move the publication
-file.copy(c("main.md"), gfm.dir)
-file.remove(c("main.md"))
-## move the images
-file.copy(c("main_files"), gfm.dir, recursive=TRUE)
-unlink(c("main_files"),recursive=TRUE, force=TRUE)
-
 # WORD
 ## generate the file
 rmarkdown::render("main.rmd",
